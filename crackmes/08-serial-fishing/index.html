@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>#07 — Keygen com Checksum · CRACKLAB</title>
+<title>#08 — Serial Fishing · CRACKLAB</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
@@ -32,10 +32,10 @@ nav{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(8,11,15,.85)
 .challenge-header{margin-bottom:4rem;opacity:0;animation:fadeUp .6s ease forwards .2s}
 .challenge-meta{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
 .meta-num{font-size:12px;color:var(--dim);letter-spacing:.1em}
-.meta-level{font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:2px;background:rgba(240,192,64,.1);color:var(--amber);border:1px solid rgba(240,192,64,.2)}
+.meta-level{font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:2px;background:rgba(57,211,83,.1);color:var(--green);border:1px solid rgba(57,211,83,.2)}
 .meta-technique{font-size:12px;color:var(--muted);border:1px solid var(--border2);padding:3px 10px;letter-spacing:.05em}
 .challenge-title{font-family:var(--display);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;letter-spacing:-.04em;line-height:.95;margin-bottom:1rem}
-.challenge-title .accent{color:var(--cyan)}
+.challenge-title .accent{color:var(--amber)}
 .challenge-tagline{font-size:16px;color:var(--muted);line-height:1.8;max-width:600px;margin-top:1rem}
 .story-block{background:var(--bg2);border:1px solid var(--border);padding:2rem;margin-bottom:3rem;position:relative;overflow:hidden}
 .story-block::before{content:'// história';position:absolute;top:1rem;right:1.5rem;font-size:10px;color:var(--dim);letter-spacing:.1em}
@@ -49,7 +49,7 @@ nav{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(8,11,15,.85)
 .sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
 .concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:3rem}
 .concept-card{background:var(--bg);padding:1.5rem}
-.concept-name{font-size:12px;color:var(--cyan);letter-spacing:.08em;margin-bottom:.75rem;font-weight:700}
+.concept-name{font-size:12px;color:var(--amber);letter-spacing:.08em;margin-bottom:.75rem;font-weight:700}
 .concept-desc{font-size:12px;color:var(--muted);line-height:1.8}
 .hint-box{border:1px solid var(--border2);padding:1.5rem 2rem;margin:2rem 0;position:relative;background:var(--bg2)}
 .hint-box::before{content:'> dica';position:absolute;top:-10px;left:1.5rem;background:var(--bg2);padding:0 8px;font-size:10px;color:var(--amber);letter-spacing:.1em;border:1px solid var(--border2)}
@@ -66,10 +66,9 @@ nav{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(8,11,15,.85)
 .code-body{padding:1.25rem 1.5rem;overflow-x:auto}
 .code-body pre{margin:0;font-size:12px;line-height:1.9;white-space:pre}
 .hl-cmd{color:var(--green)}.hl-comment{color:var(--dim)}.hl-addr{color:var(--blue)}.hl-byte{color:var(--amber)}.hl-reg{color:var(--cyan)}.hl-str{color:var(--red)}.hl-kw{color:var(--muted)}
-.math-box{background:var(--bg3);border:1px solid var(--border2);padding:1.75rem 2rem;margin:1.5rem 0}
-.math-box .math-title{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.25rem}
-.math-box pre{font-size:12px;line-height:2;color:var(--muted)}
-.why-block{background:var(--bg3);border-left:3px solid var(--cyan);padding:1.5rem 2rem;margin:2rem 0}
+.flow-wrap{background:var(--bg2);border:1px solid var(--border);padding:2rem;margin:2rem 0;overflow-x:auto}
+.flow-title{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem}
+.why-block{background:var(--bg3);border-left:3px solid var(--amber);padding:1.5rem 2rem;margin:2rem 0}
 .why-block p{font-size:13px;color:var(--muted);line-height:1.8}
 .why-block strong{color:var(--text)}
 .alt-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:12px}
@@ -111,196 +110,166 @@ footer{border-top:1px solid var(--border);padding:2rem;display:flex;align-items:
   <div class="breadcrumb">
     <a href="../../index.html">/cracklab</a><span>/</span>
     <a href="../../index.html#challenges">desafios</a><span>/</span>
-    <span style="color:var(--muted)">#07 — keygen com checksum</span>
+    <span style="color:var(--muted)">#08 — serial fishing</span>
   </div>
 
   <div class="challenge-header">
     <div class="challenge-meta">
-      <span class="meta-num">// 07</span>
-      <span class="meta-level">intermediário</span>
-      <span class="meta-technique">CRC-8 · XOR · dois campos</span>
+      <span class="meta-num">// 08</span>
+      <span class="meta-level">iniciante</span>
+      <span class="meta-technique">strings / rodata fishing</span>
     </div>
-    <h1 class="challenge-title">Keygen com<br><span class="accent">Checksum</span></h1>
-    <p class="challenge-tagline">A licença tem dois campos que se verificam mutuamente. Entender um não basta — você precisa dos dois.</p>
+    <h1 class="challenge-title">Serial<br><span class="accent">Fishing</span></h1>
+    <p class="challenge-tagline">A resposta já está no binário. Você só precisa saber onde pescar.</p>
   </div>
 
   <!-- STORY -->
   <div class="story-block reveal">
     <p style="font-size:13px;color:var(--muted);line-height:1.8">
-      Sistema de licença corporativa. Formato <code style="color:var(--cyan)">PRODCODE:CHECKSUM</code> — 8 hex chars, dois pontos, 2 hex chars.<br><br>
-      O PRODCODE pode ser qualquer valor de 32 bits. O CHECKSUM deve ser exatamente o CRC-8 do PRODCODE, XORado com uma constante mágica escondida no binário.<br>
-      <strong style="color:var(--text)">Você vai reconstruir o CRC-8 e encontrar a constante.</strong>
+      Software de registro. Uma serial. Você não tem — mas o binário sim.<br>
+      Não tem hash. Não tem criptografia. Só um <code style="color:var(--cyan)">strcmp</code> direto com uma string fixa.<br>
+      O ELF carrega a resposta consigo o tempo todo.
     </p>
     <div class="story-terminal">
       <div class="terminal-bar">
         <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-        <span class="terminal-path">~/cracklab/07-keygen-checksum</span>
+        <span class="terminal-path">~/crackmes/08-serial-fishing</span>
       </div>
       <div class="terminal-body">
-        <div><span class="t-dim">$</span> <span class="t-green">./challenge</span></div>
-        <div style="color:var(--dim)">Licença: <span class="t-amber">DEADBEEF:00</span></div>
-        <div style="color:var(--red)">  ✗ Checksum inválido. Esperado: 14, recebido: 00</div>
-        <div style="margin-top:8px"><span class="t-dim">$</span> <span class="t-green">./challenge</span></div>
-        <div style="color:var(--dim)">Licença: <span class="t-amber">DEADBEEF:14</span></div>
-        <div style="color:var(--green)">  ✓ LICENÇA VÁLIDA — Módulo corporativo desbloqueado.</div>
+        <span class="t-dim">$</span> <span class="t-green">./challenge</span><br>
+        ╔══════════════════════════════════════╗<br>
+        ║   REGISTRO DE SOFTWARE v3.0          ║<br>
+        ╚══════════════════════════════════════╝<br><br>
+        Serial de registro: <span class="t-amber">QUALQUER-COISA</span><br><br>
+        <span class="t-red">  ✗ Serial inválida.</span><br>
+        <span class="t-dim">  Dica: a resposta já está no binário.</span>
       </div>
     </div>
   </div>
 
   <!-- CONCEITOS -->
-  <div class="reveal">
-    <div class="sec-label">// conceitos necessários</div>
-    <div class="concept-grid">
-      <div class="concept-card">
-        <div class="concept-name">CRC-8</div>
-        <div class="concept-desc">Cyclic Redundancy Check de 8 bits. Processa cada byte bit a bit com o polinômio <code style="color:var(--amber)">0x07</code>. O resultado é um checksum de 1 byte — frequente em protocolos de comunicação.</div>
-      </div>
-      <div class="concept-card">
-        <div class="concept-name">XOR COM CONSTANTE</div>
-        <div class="concept-desc">O programa faz <code style="color:var(--cyan)">crc8(prod) ^ MAGIC</code> onde <code style="color:var(--amber)">MAGIC = 0xDE</code>. O XOR com uma constante é um padrão clássico pra ofuscar checksums — mas a constante está hardcoded no binário.</div>
-      </div>
-      <div class="concept-card">
-        <div class="concept-name">BIG-ENDIAN NO INPUT</div>
-        <div class="concept-desc">O PRODCODE é lido como string hex e convertido por <code style="color:var(--cyan)">strtoul</code>. <code style="color:var(--amber)">DEADBEEF</code> vira o inteiro <code style="color:var(--amber)">0xDEADBEEF</code> — depois o CRC processa os bytes do mais significativo ao menos.</div>
-      </div>
-      <div class="concept-card">
-        <div class="concept-name">STRINGS + GHIDRA</div>
-        <div class="concept-desc">A constante <code style="color:var(--amber)">0xDE</code> aparece como imediato num <code style="color:var(--cyan)">xor</code> ou <code style="color:var(--cyan)">mov</code>. <code>objdump | grep 0xde</code> ou a view de constantes do Ghidra acha em segundos.</div>
-      </div>
+  <div class="sec-label reveal">conceitos</div>
+  <div class="concept-grid reveal">
+    <div class="concept-card">
+      <div class="concept-name">.rodata</div>
+      <div class="concept-desc">Seção de dados somente-leitura no ELF. Strings literais do programa vivem aqui — acessíveis mas não modificáveis em runtime sem patch.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-name">strings(1)</div>
+      <div class="concept-desc">Ferramenta POSIX que extrai sequências de caracteres imprimíveis de qualquer arquivo binário. Primeiro passo em qualquer análise estática.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-name">strcmp em runtime</div>
+      <div class="concept-desc">Interceptar <code>strcmp</code> via breakpoint revela os argumentos em memória — funciona mesmo quando a serial é montada dinamicamente.</div>
     </div>
   </div>
 
   <!-- DICA -->
   <div class="hint-box reveal">
-    <p>
-      Olha o disassembly de <code style="color:var(--cyan)">expected_checksum</code>.<br>
-      Depois do <code style="color:var(--cyan)">call crc8</code>, tem uma instrução com um operando de 1 byte.<br>
-      Esse byte é o MAGIC. Com ele em mãos, o keygen tem duas linhas.
-    </p>
+    <p>Antes de qualquer disassembly, tente a ferramenta mais simples:<br>
+    <code style="color:var(--cyan)">strings ./challenge | grep -E "^[A-Z0-9-]{5,}"</code><br>
+    O que você vê? Consegue montar a serial com os pedaços?</p>
   </div>
 
-  <!-- SOLUÇÃO -->
-  <div class="reveal" style="margin-top:3rem">
-    <div class="sec-label">// solução passo a passo</div>
-  </div>
-
-  <!-- PASSO 1 -->
+  <!-- STEP 1 -->
+  <div class="sec-label reveal">solução</div>
   <div class="step-block reveal">
-    <div class="step-num">01</div>
-    <div class="step-title">Encontrar a constante MAGIC</div>
+    <div class="step-num">// passo 01</div>
+    <div class="step-title">Abordagem 1 — strings (o caminho direto)</div>
+    <div class="step-desc">A serial foi dividida em fragmentos no código-fonte pra dificultar um grep ingênuo. Mas os pedaços continuam visíveis individualmente em <code>.rodata</code>.</div>
     <div class="code-block">
       <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
-      <div class="code-body"><pre><span class="hl-cmd">objdump -d ./challenge | grep -A 10 "&lt;expected_checksum&gt;:"</span></pre></div>
+      <div class="code-body"><pre><span class="hl-cmd">strings</span> ./challenge</pre></div>
     </div>
-    <div class="step-desc">Você vai ver:</div>
+    <div class="step-desc">Você vai ver os fragmentos:</div>
     <div class="code-block">
-      <div class="code-header"><span class="code-lang">asm</span></div>
-      <div class="code-body"><pre><span class="hl-addr">401262</span> &lt;expected_checksum&gt;:
-  <span class="hl-addr">401276</span>:  <span class="hl-byte">e8 7b ff ff ff</span>   <span class="hl-reg">call</span>  4011f6 &lt;crc8&gt;
-  <span class="hl-addr">40127b</span>:  <span class="hl-byte">34 de</span>            <span class="hl-reg">xor</span>   $0xde,%al         <span class="hl-comment">← MAGIC = 0xDE</span></pre></div>
+      <div class="code-header"><span class="code-lang">output</span></div>
+      <div class="code-body"><pre><span class="hl-str">CR4CK</span>
+<span class="hl-str">L4B-</span>
+<span class="hl-str">2026</span>
+<span class="hl-str">-S3R</span>
+<span class="hl-str">I4L</span></pre></div>
     </div>
-    <div class="why-block">
-      <p>
-        <code style="color:var(--amber)">34 de</code> é o opcode de <strong>xor al, 0xde</strong>.<br>
-        O byte imediato <strong>0xDE</strong> é a constante MAGIC. Com ela e com a lógica do CRC-8, você tem tudo.
-      </p>
-    </div>
+    <div class="step-desc">Concatenados na ordem: <code style="color:var(--amber)">CR4CKL4B-2026-S3RI4L</code></div>
   </div>
 
-  <!-- PASSO 2 -->
+  <!-- STEP 2 -->
   <div class="step-block reveal">
-    <div class="step-num">02</div>
-    <div class="step-title">Reconstruir o CRC-8 em Python</div>
-    <div class="step-desc">O loop dentro de <code>crc8</code> processa 4 bytes do inteiro, do mais significativo ao menos:</div>
-    <div class="code-block">
-      <div class="code-header"><span class="code-lang">asm — loop interno de crc8</span></div>
-      <div class="code-body"><pre><span class="hl-comment">; para cada byte (i de 3 a 0):</span>
-<span class="hl-comment">;   para cada bit (7 a 0):</span>
-<span class="hl-comment">;     if (crc ^ byte) &amp; 0x80: crc = (crc &lt;&lt; 1) ^ 0x07</span>
-<span class="hl-comment">;     else:                    crc = (crc &lt;&lt; 1)</span>
-<span class="hl-comment">;     byte &lt;&lt;= 1</span></pre></div>
-    </div>
-    <div class="code-block">
-      <div class="code-header"><span class="code-lang">python3 — keygen.py</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
-      <div class="code-body"><pre><span class="hl-comment">#!/usr/bin/env python3</span>
-<span class="hl-comment"># keygen.py — CRACKLAB #07</span>
-<span class="hl-kw">import</span> sys
-
-MAGIC = 0xDE
-
-<span class="hl-kw">def</span> <span class="hl-cmd">crc8</span>(value: int) -> int:
-    crc = 0
-    <span class="hl-kw">for</span> i <span class="hl-kw">in</span> range(3, -1, -1):
-        byte = (value >> (i * 8)) & 0xFF
-        <span class="hl-kw">for</span> _ <span class="hl-kw">in</span> range(8):
-            <span class="hl-kw">if</span> (crc ^ byte) & 0x80:
-                crc = ((crc << 1) ^ 0x07) & 0xFF
-            <span class="hl-kw">else</span>:
-                crc = (crc << 1) & 0xFF
-            byte = (byte << 1) & 0xFF
-    <span class="hl-kw">return</span> crc
-
-<span class="hl-kw">def</span> <span class="hl-cmd">keygen</span>(prod: int) -> str:
-    checksum = crc8(prod) ^ MAGIC
-    <span class="hl-kw">return</span> f<span class="hl-str">"{prod:08X}:{checksum:02X}"</span>
-
-<span class="hl-comment"># testa com alguns valores</span>
-<span class="hl-kw">for</span> prod <span class="hl-kw">in</span> [0xDEADBEEF, 0x12345678, 0xCAFEBABE]:
-    print(keygen(prod))</pre></div>
-    </div>
-    <div class="story-terminal" style="margin-top:1rem">
-      <div class="terminal-bar">
-        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-        <span class="terminal-path">~/cracklab/07-keygen-checksum</span>
-      </div>
-      <div class="terminal-body">
-        <div><span class="t-dim">$</span> <span class="t-green">python3 keygen.py</span></div>
-        <div style="color:var(--cyan)">DEADBEEF:14</div>
-        <div style="color:var(--cyan)">12345678:C2</div>
-        <div style="color:var(--cyan)">CAFEBABE:56</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PASSO 3 -->
-  <div class="step-block reveal">
-    <div class="step-num">03</div>
-    <div class="step-title">Verificar</div>
+    <div class="step-num">// passo 02</div>
+    <div class="step-title">Confirma com strings -o (offset no arquivo)</div>
     <div class="code-block">
       <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
-      <div class="code-body"><pre><span class="hl-cmd">printf "CAFEBABE:56\n" | ./challenge</span>
-<span class="hl-comment"># ✓ LICENÇA VÁLIDA</span></pre></div>
+      <div class="code-body"><pre><span class="hl-cmd">strings</span> -o ./challenge | <span class="hl-cmd">grep</span> -E "CR4CK|L4B|S3R"</pre></div>
+    </div>
+    <div class="step-desc">O flag <code>-o</code> mostra o offset decimal de cada string no arquivo — útil pra localizar exatamente onde patchear se precisar.</div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-block reveal">
+    <div class="step-num">// passo 03</div>
+    <div class="step-title">Abordagem 2 — interceptar strcmp no GDB</div>
+    <div class="step-desc">Funciona mesmo se a serial for montada em runtime — você vê a string já construída em memória no momento da comparação.</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-cmd">gdb</span> ./challenge
+<span class="hl-kw">break</span> strcmp
+<span class="hl-kw">run</span>
+<span class="hl-comment"># quando parar no breakpoint:</span>
+<span class="hl-kw">x/s</span> $rdi   <span class="hl-comment"># sua entrada</span>
+<span class="hl-kw">x/s</span> $rsi   <span class="hl-comment"># serial correta ← aparece aqui</span></pre></div>
     </div>
   </div>
 
-  <!-- VARIAÇÕES -->
-  <div class="reveal" style="margin-top:2.5rem">
-    <div class="sec-label">// variações pra explorar</div>
-    <table class="alt-table">
-      <thead>
-        <tr><th>variação</th><th>o que faz</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>patch do checksum</td><td>Trocar o <code style="color:var(--blue)">jne</code> final em <code style="color:var(--blue)">0x40141e</code> por NOP. Aceita qualquer entrada. Mais rápido, mas não entende nada.</td></tr>
-        <tr><td>keygen correto</td><td>Reproduz CRC-8 + XOR. Funciona pra qualquer PRODCODE de 32 bits — ~4 bilhões de licenças válidas.</td></tr>
-        <tr><td>brutar MAGIC</td><td>Com um par (prod, check) conhecido — que o programa revela no output de erro — você pode deduzir MAGIC em 256 tentativas. O programa entrega ele de graça.</td></tr>
-      </tbody>
-    </table>
-    <div class="question-box">
-      <p>O programa exibe o checksum esperado quando você erra: <em>"Esperado: 14, recebido: 00"</em>. Isso torna o keygen completamente desnecessário — uma única tentativa errada já te dá a resposta. Que lição de design de segurança isso demonstra?</p>
+  <!-- STEP 4 -->
+  <div class="step-block reveal">
+    <div class="step-num">// passo 04</div>
+    <div class="step-title">Registra</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-cmd">./challenge</span>
+Serial de registro: <span class="hl-amber">CR4CKL4B-2026-S3RI4L</span></pre></div>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">output</span></div>
+      <div class="code-body"><pre>  ╔════════════════════════════════════╗
+  ║  <span class="t-green">✓ SERIAL VÁLIDA</span>                   ║
+  ║  Produto registrado com sucesso.   ║
+  ║  <span class="t-amber">FLAG{strings_reveal_secrets}</span>      ║
+  ╚════════════════════════════════════╝</pre></div>
     </div>
   </div>
 
+  <!-- WHY -->
+  <div class="why-block reveal">
+    <p><strong>Por que funciona:</strong> Strings literais em C ficam na seção <code>.rodata</code> do ELF — somente leitura, mas nunca cifradas por padrão. O binário divide a serial em fragmentos pra dificultar um grep direto, mas os pedaços continuam legíveis individualmente. Proteção real exigiria XOR, hash ou geração em runtime com dados externos.</p>
+  </div>
+
+  <!-- ALTERNATIVAS -->
+  <div class="sec-label reveal">alternativas</div>
+  <table class="alt-table reveal">
+    <thead><tr><th>Método</th><th>Funciona se serial for dinâmica?</th><th>Deixa rastro?</th></tr></thead>
+    <tbody>
+      <tr><td>strings</td><td>Não — só vê o que está em .rodata</td><td>Nenhum</td></tr>
+      <tr><td>breakpoint no strcmp</td><td>Sim — vê a string já montada</td><td>Nenhum (análise dinâmica)</td></tr>
+      <tr><td>NOP no strcmp + eax=0</td><td>Sim — qualquer entrada passa</td><td>Modifica o binário</td></tr>
+    </tbody>
+  </table>
+
+  <div class="question-box reveal">
+    <p>Se a serial fosse gerada como <code>SHA256(nome_do_usuário)</code> em vez de hardcoded, qual dessas abordagens ainda funcionaria? Qual não funcionaria mais? E se a serial fosse validada por um servidor remoto?</p>
+  </div>
+
+  <!-- NAV -->
   <div class="nav-challenges reveal">
-    <a href="../06-keygen-simples/index.html" class="nav-ch-item back">
+    <a href="../07-keygen-checksum/index.html" class="nav-ch-item back">
       <div class="nav-ch-dir">← desafio anterior</div>
-      <div class="nav-ch-num">// 06</div>
-      <div class="nav-ch-title">Keygen Simples</div>
+      <div class="nav-ch-num">// 07</div>
+      <div class="nav-ch-title">Keygen c/ Checksum</div>
     </a>
-    <a href="../08-serial-fishing/index.html" class="nav-ch-item next" style="text-align:right">
+    <a href="../09-string-patching/index.html" class="nav-ch-item next" style="text-align:right">
       <div class="nav-ch-dir">próximo desafio →</div>
-      <div class="nav-ch-num">// 08</div>
-      <div class="nav-ch-title">Serial Fishing</div>
+      <div class="nav-ch-num">// 09</div>
+      <div class="nav-ch-title">String Patching</div>
     </a>
   </div>
 
