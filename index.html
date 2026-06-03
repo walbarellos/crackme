@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRACKLAB — engenharia reversa na prática</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b0f;
+  --bg2:#0d1117;
+  --bg3:#161b22;
+  --border:#1e2732;
+  --border2:#2d3748;
+  --text:#e6edf3;
+  --muted:#7d8590;
+  --dim:#4a5568;
+  --green:#39d353;
+  --green2:#26a641;
+  --amber:#f0c040;
+  --red:#f85149;
+  --blue:#58a6ff;
+  --cyan:#79c0ff;
+  --mono:'JetBrains Mono',monospace;
+  --display:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--mono);
+  font-size:14px;
+  line-height:1.6;
+  overflow-x:hidden;
+  cursor:crosshair;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* SCANLINES OVERLAY */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
+  pointer-events:none;
+  z-index:999;
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  height:52px;
+  background:rgba(8,11,15,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 2rem;
+  z-index:100;
+}
+.nav-logo{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:18px;
+  letter-spacing:-.02em;
+  color:var(--text);
+  text-decoration:none;
+}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-badge{
+  font-size:11px;
+  color:var(--green);
+  border:1px solid var(--green2);
+  padding:3px 10px;
+  border-radius:2px;
+  letter-spacing:.1em;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:6rem 2rem 4rem;
+  position:relative;
+  overflow:hidden;
+}
+.hero-grid{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(var(--border) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:60px 60px;
+  opacity:.3;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black,transparent);
+}
+.hero-glow{
+  position:absolute;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(57,211,83,.06) 0%,transparent 70%);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.hero-content{
+  max-width:900px;
+  margin:0 auto;
+  position:relative;
+  z-index:1;
+}
+.hero-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+  color:var(--green);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  margin-bottom:2rem;
+  opacity:0;
+  animation:fadeUp .6s ease forwards .1s;
+}
+.hero-tag::before{
+  content:'';
+  width:24px;height:1px;
+  background:var(--green);
+}
+.hero-title{
+  font-family:var(--display);
+  font-size:clamp(3rem,8vw,7rem);
+  font-weight:800;
+  line-height:.95;
+  letter-spacing:-.04em;
+  margin-bottom:1.5rem;
+  opacity:0;
+  animation:fadeUp .7s ease forwards .2s;
+}
+.hero-title .line2{
+  color:transparent;
+  -webkit-text-stroke:1px var(--border2);
+}
+.hero-title .accent{color:var(--green)}
+.hero-sub{
+  font-size:16px;
+  color:var(--muted);
+  max-width:560px;
+  line-height:1.8;
+  margin-bottom:3rem;
+  opacity:0;
+  animation:fadeUp .7s ease forwards .35s;
+}
+.hero-cta{
+  display:flex;
+  gap:1rem;
+  align-items:center;
+  opacity:0;
+  animation:fadeUp .7s ease forwards .5s;
+}
+.btn-primary{
+  background:var(--green);
+  color:#080b0f;
+  border:none;
+  padding:12px 28px;
+  font-family:var(--mono);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.05em;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  transition:transform .15s,box-shadow .15s;
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(57,211,83,.25);
+}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost{
+  color:var(--muted);
+  font-size:13px;
+  text-decoration:none;
+  letter-spacing:.05em;
+  transition:color .2s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.btn-ghost:hover{color:var(--text)}
+.hero-stats{
+  display:flex;
+  gap:3rem;
+  margin-top:4rem;
+  padding-top:2rem;
+  border-top:1px solid var(--border);
+  opacity:0;
+  animation:fadeUp .7s ease forwards .65s;
+}
+.stat-val{
+  font-family:var(--display);
+  font-size:28px;
+  font-weight:800;
+  color:var(--text);
+}
+.stat-label{
+  font-size:11px;
+  color:var(--dim);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-top:2px;
+}
+
+/* TERMINAL BLOCK */
+.terminal{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:4px;
+  overflow:hidden;
+  margin-bottom:4rem;
+  opacity:0;
+  animation:fadeUp .7s ease forwards .8s;
+}
+.terminal-bar{
+  background:var(--bg3);
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border-bottom:1px solid var(--border);
+}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot-r{background:#f85149}
+.dot-y{background:#f0c040}
+.dot-g{background:#39d353}
+.terminal-path{
+  margin-left:8px;
+  font-size:11px;
+  color:var(--dim);
+}
+.terminal-body{
+  padding:1.5rem;
+  font-size:13px;
+  line-height:2;
+}
+.t-dim{color:var(--dim)}
+.t-green{color:var(--green)}
+.t-amber{color:var(--amber)}
+.t-red{color:var(--red)}
+.t-blue{color:var(--blue)}
+.t-cyan{color:var(--cyan)}
+.t-cursor{
+  display:inline-block;
+  width:8px;height:14px;
+  background:var(--green);
+  vertical-align:-2px;
+  animation:blink 1s step-end infinite;
+}
+
+/* SECTION */
+section{padding:6rem 2rem;max-width:1100px;margin:0 auto}
+.section-label{
+  font-size:11px;
+  color:var(--dim);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:1rem;
+}
+.section-label::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
+.section-title{
+  font-family:var(--display);
+  font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:800;
+  letter-spacing:-.03em;
+  margin-bottom:.75rem;
+}
+.section-sub{
+  color:var(--muted);
+  font-size:14px;
+  max-width:500px;
+  line-height:1.8;
+  margin-bottom:3.5rem;
+}
+
+/* CHALLENGES GRID */
+.challenges-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+.challenge-card{
+  background:var(--bg);
+  padding:1.75rem;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  transition:background .2s;
+}
+.challenge-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(57,211,83,.04) 0%,transparent 60%);
+  opacity:0;
+  transition:opacity .3s;
+}
+.challenge-card:hover{background:var(--bg2)}
+.challenge-card:hover::before{opacity:1}
+.card-num{
+  font-size:11px;
+  color:var(--dim);
+  letter-spacing:.1em;
+  margin-bottom:1rem;
+}
+.card-level{
+  display:inline-block;
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  padding:2px 8px;
+  border-radius:2px;
+  margin-bottom:1.25rem;
+}
+.level-ini{background:rgba(57,211,83,.1);color:var(--green);border:1px solid rgba(57,211,83,.2)}
+.level-mid{background:rgba(240,192,64,.1);color:var(--amber);border:1px solid rgba(240,192,64,.2)}
+.level-adv{background:rgba(248,81,73,.1);color:var(--red);border:1px solid rgba(248,81,73,.2)}
+.card-title{
+  font-family:var(--display);
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:.5rem;
+  line-height:1.1;
+}
+.card-tech{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:1.5rem;
+  line-height:1.6;
+}
+.card-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.tag{
+  font-size:10px;
+  color:var(--dim);
+  border:1px solid var(--border2);
+  padding:2px 8px;
+  letter-spacing:.06em;
+}
+.card-arrow{
+  position:absolute;
+  bottom:1.75rem;right:1.75rem;
+  font-size:18px;
+  color:var(--border2);
+  transition:color .2s,transform .2s;
+}
+.challenge-card:hover .card-arrow{
+  color:var(--green);
+  transform:translate(3px,-3px);
+}
+
+/* TRAIL */
+.trail-wrap{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  padding:2rem;
+  margin-top:4rem;
+}
+.trail-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:1.5rem;
+}
+.trail-title{
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.trail-items{
+  display:flex;
+  gap:0;
+  overflow-x:auto;
+  padding-bottom:4px;
+}
+.trail-item{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+}
+.trail-node{
+  width:36px;height:36px;
+  border-radius:2px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  font-weight:700;
+  border:1px solid var(--border2);
+  color:var(--muted);
+  background:var(--bg3);
+  transition:all .2s;
+  cursor:pointer;
+  position:relative;
+}
+.trail-node.done{
+  background:rgba(57,211,83,.1);
+  border-color:var(--green2);
+  color:var(--green);
+}
+.trail-node.active{
+  background:var(--bg3);
+  border-color:var(--blue);
+  color:var(--blue);
+  box-shadow:0 0 12px rgba(88,166,255,.15);
+}
+.trail-line{
+  width:32px;height:1px;
+  background:var(--border2);
+}
+.trail-node.done+.trail-line{background:var(--green2)}
+
+/* HOW IT WORKS */
+.how-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+.how-card{
+  background:var(--bg);
+  padding:2rem 1.75rem;
+}
+.how-num{
+  font-family:var(--display);
+  font-size:48px;
+  font-weight:800;
+  color:var(--border2);
+  line-height:1;
+  margin-bottom:1.25rem;
+  transition:color .3s;
+}
+.how-card:hover .how-num{color:var(--green)}
+.how-card-title{
+  font-size:15px;
+  font-weight:700;
+  margin-bottom:.5rem;
+  color:var(--text);
+}
+.how-card-desc{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.8;
+}
+
+/* TOOLS */
+.tools-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:1rem;
+  margin-top:2rem;
+}
+.tool-chip{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid var(--border);
+  padding:10px 16px;
+  font-size:12px;
+  color:var(--muted);
+  transition:border-color .2s,color .2s;
+}
+.tool-chip:hover{border-color:var(--border2);color:var(--text)}
+.tool-dot{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--green);
+  flex-shrink:0;
+}
+
+/* ABOUT STRIP */
+.about-strip{
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:4rem 2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:3rem;
+  background:var(--bg2);
+}
+.about-text{
+  max-width:600px;
+}
+.about-text p{
+  font-size:15px;
+  color:var(--muted);
+  line-height:1.9;
+}
+.about-text p+p{margin-top:1rem}
+.about-text strong{color:var(--text)}
+
+/* CTA SECTION */
+.cta-section{
+  text-align:center;
+  padding:8rem 2rem;
+  position:relative;
+  overflow:hidden;
+}
+.cta-section::before{
+  content:'';
+  position:absolute;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(57,211,83,.05) 0%,transparent 70%);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.cta-section .section-title{font-size:clamp(2rem,5vw,4rem)}
+.cta-command{
+  display:inline-block;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  padding:12px 24px;
+  font-size:14px;
+  color:var(--green);
+  margin:2rem 0;
+  letter-spacing:.05em;
+}
+.cta-command .prompt{color:var(--dim)}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  padding:2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color:var(--dim);
+  font-size:11px;
+  letter-spacing:.08em;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes blink{
+  0%,100%{opacity:1}
+  50%{opacity:0}
+}
+@keyframes scanline{
+  0%{transform:translateY(-100%)}
+  100%{transform:translateY(100vh)}
+}
+
+/* SCROLL REVEAL */
+.reveal{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .how-grid{grid-template-columns:1fr}
+  .hero-stats{flex-wrap:wrap;gap:2rem}
+  .about-strip{flex-direction:column}
+  nav .nav-links{display:none}
+  .trail-items{gap:0}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#"><span>/</span>cracklab</a>
+  <ul class="nav-links">
+    <li><a href="#challenges">Desafios</a></li>
+    <li><a href="#como">Como funciona</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+  </ul>
+  <span class="nav-badge">BETA</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-tag">engenharia reversa aplicada</div>
+    <h1 class="hero-title">
+      CRACK<br>
+      <span class="line2">THE</span><br>
+      <span class="accent">BINARY</span>
+    </h1>
+    <p class="hero-sub">
+      Aprenda reversing na prática. Binários reais que você vai desmontar,
+      entender e quebrar — sem vídeo, sem teoria vazia, sem enrolação.
+    </p>
+    <div class="hero-cta">
+      <a href="#challenges" class="btn-primary">
+        <span>▶</span> começar agora
+      </a>
+      <a href="#como" class="btn-ghost">como funciona →</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">40</div>
+        <div class="stat-label">desafios planejados</div>
+      </div>
+      <div>
+        <div class="stat-val">8</div>
+        <div class="stat-label">níveis de dificuldade</div>
+      </div>
+      <div>
+        <div class="stat-val">0</div>
+        <div class="stat-label">bullshit</div>
+      </div>
+    </div>
+
+    <!-- TERMINAL -->
+    <div class="terminal" style="margin-top:3rem;max-width:680px">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="terminal-path">~/cracklab/02-patch-retorno</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-dim">$</span> <span class="t-green">./challenge</span></div>
+        <div><span class="t-dim">Usuario: </span><span class="t-amber">hacker</span></div>
+        <div style="color:var(--red)">  [X] Acesso negado.</div>
+        <div style="margin-top:12px"><span class="t-dim">$</span> <span class="t-green">r2 -A ./challenge</span></div>
+        <div><span class="t-dim">[0x004011b6]&gt;</span> <span class="t-cyan">s sym.is_premium_user; pdf</span></div>
+        <div><span class="t-dim">...</span></div>
+        <div><span class="t-blue">4011fe:</span>  <span class="t-amber">b8 00 00 00 00</span>  mov $0x0,%eax  <span class="t-dim">← aqui</span></div>
+        <div><span class="t-dim">[0x004011fe]&gt;</span> <span class="t-green">wx b8 01 00 00 00</span></div>
+        <div><span class="t-dim">$</span> <span class="t-green">./challenge</span></div>
+        <div><span class="t-dim">Usuario: </span><span class="t-amber">hacker</span></div>
+        <div style="color:var(--green)">  [OK] Bem-vindo ao conteúdo premium. <span class="t-cursor"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHALLENGES -->
+<section id="challenges">
+  <div class="reveal">
+    <div class="section-label">// desafios disponíveis</div>
+    <h2 class="section-title">Quebre. Entenda.<br>Faça de novo.</h2>
+    <p class="section-sub">Cada desafio é um binário ELF que você vai desmontar, analisar e patchear. Writeup completo incluído — mas tenta primeiro.</p>
+  </div>
+
+  <div class="challenges-grid reveal">
+
+    <a href="crackmes/01-nop-patch/index.html" class="challenge-card" style="text-decoration:none;color:inherit">
+      <div class="card-num">// 01</div>
+      <div class="card-level level-ini">iniciante</div>
+      <div class="card-title">NOP Patch</div>
+      <div class="card-tech">Dois bytes apagam uma decisão inteira. A primeira coisa que todo reverser aprende.</div>
+      <div class="card-tags">
+        <span class="tag">nop 0x90</span>
+        <span class="tag">jump patch</span>
+        <span class="tag">r2</span>
+      </div>
+      <span class="card-arrow">↗</span>
+    </a>
+
+    <a href="crackmes/02-patch-retorno/index.html" class="challenge-card" style="text-decoration:none;color:inherit">
+      <div class="card-num">// 02</div>
+      <div class="card-level level-ini">iniciante</div>
+      <div class="card-title">Patch de Retorno</div>
+      <div class="card-tech">Força uma função a sempre retornar 1 — independente da lógica interna.</div>
+      <div class="card-tags">
+        <span class="tag">mov eax,1</span>
+        <span class="tag">ret</span>
+        <span class="tag">registradores</span>
+      </div>
+      <span class="card-arrow">↗</span>
+    </a>
+
+    <a href="crackmes/03-inverter-jump/index.html" class="challenge-card" style="text-decoration:none;color:inherit">
+      <div class="card-num">// 03</div>
+      <div class="card-level level-ini">iniciante</div>
+      <div class="card-title">Inverter Jump</div>
+      <div class="card-tech">A lógica está correta. O portão está virado. Um byte resolve.</div>
+      <div class="card-tags">
+        <span class="tag">je → jne</span>
+        <span class="tag">74 → 75</span>
+        <span class="tag">flags</span>
+      </div>
+      <span class="card-arrow">↗</span>
+    </a>
+
+    <a href="crackmes/04-patch-constante/index.html" class="challenge-card" style="text-decoration:none;color:inherit">
+      <div class="card-num">// 04</div>
+      <div class="card-level level-ini">iniciante</div>
+      <div class="card-title">Patch de Constante</div>
+      <div class="card-tech">O PIN está gravado no binário. Você pode lê-lo ou reescrevê-lo.</div>
+      <div class="card-tags">
+        <span class="tag">cmp imm32</span>
+        <span class="tag">little-endian</span>
+        <span class="tag">objdump</span>
+      </div>
+      <span class="card-arrow">↗</span>
+    </a>
+
+    <a href="crackmes/05-redirect-funcao/index.html" class="challenge-card" style="text-decoration:none;color:inherit">
+      <div class="card-num">// 05</div>
+      <div class="card-level level-mid">intermediário</div>
+      <div class="card-title">Redirect de Função</div>
+      <div class="card-tech">call relativo. Você troca o destino calculando o novo offset.</div>
+      <div class="card-tags">
+        <span class="tag">call e8</span>
+        <span class="tag">offset relativo</span>
+        <span class="tag">python</span>
+      </div>
+      <span class="card-arrow">↗</span>
+    </a>
+
+    <a href="crackmes/06-keygen-simples/index.html" class="challenge-card" style="text-decoration:none;color:inherit">
+      <div class="card-num">// 06</div>
+      <div class="card-level level-mid">intermediário</div>
+      <div class="card-title">Keygen Simples</div>
+      <div class="card-tech">Entenda o algoritmo de validação. Escreva o gerador de chaves.</div>
+      <div class="card-tags">
+        <span class="tag">reversing</span>
+        <span class="tag">algoritmo</span>
+        <span class="tag">keygen</span>
+      </div>
+      <span class="card-arrow">↗</span>
+    </a>
+
+    <a href="crackmes/07-keygen-checksum/index.html" class="challenge-card" style="text-decoration:none;color:inherit">
+      <div class="card-num">// 07</div>
+      <div class="card-level level-mid">intermediário</div>
+      <div class="card-title">Keygen c/ Checksum</div>
+      <div class="card-tech">O nível sobe. Gere chaves válidas que obedeçam a um checksum CRC-8 interno.</div>
+      <div class="card-tags">
+        <span class="tag">algoritmo</span>
+        <span class="tag">checksum</span>
+        <span class="tag">python</span>
+      </div>
+      <span class="card-arrow">↗</span>
+    </a>
+
+    <div class="challenge-card" style="opacity:.45;cursor:not-allowed">
+      <div class="card-num">// 08</div>
+      <div class="card-level level-mid">intermediário</div>
+      <div class="card-title">Serial Fishing</div>
+      <div class="card-tech">A serial está gravada em texto plano. strings, xxd, grep — você decide.</div>
+      <div class="card-tags">
+        <span class="tag">strings</span>
+        <span class="tag">hardcoded</span>
+        <span class="tag">em breve</span>
+      </div>
+      <span class="card-arrow" style="color:var(--dim)">⋯</span>
+    </div>
+
+    <div class="challenge-card" style="opacity:.25;cursor:not-allowed;background:repeating-linear-gradient(45deg,var(--bg),var(--bg) 4px,var(--bg2) 4px,var(--bg2) 8px)">
+      <div class="card-num">// 09 — 40</div>
+      <div class="card-level level-adv">avançado</div>
+      <div class="card-title">Em construção</div>
+      <div class="card-tech">Anti-debug, XOR, checksums, VM protection e muito mais.</div>
+      <div class="card-tags">
+        <span class="tag">coming soon</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TRAIL -->
+  <div class="trail-wrap reveal" style="margin-top:3rem">
+    <div class="trail-header">
+      <span class="trail-title">// trilha completa — nível 1</span>
+      <span style="font-size:11px;color:var(--dim)">7 / 40 desbloqueados</span>
+    </div>
+    <div class="trail-items">
+      <div class="trail-item"><div class="trail-node done" title="NOP Patch">01</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node done" title="Patch de Retorno">02</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node done" title="Inverter Jump">03</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node done" title="Patch de Constante">04</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node done" title="Redirect de Função">05</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node done" title="Keygen Simples">06</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node active" title="Keygen com Checksum">07</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node" title="Serial Fishing">08</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node" title="String Patching">09</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node" title="Licença por Data">10</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node" title="Anti-Debug ptrace">11</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node" title="Anti-Debug Timing">12</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node" title="Checksum Bypass">13</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node" title="XOR Simples">14</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node" title="XOR Dinâmico">15</div><div class="trail-line"></div></div>
+      <div class="trail-item"><div class="trail-node">…</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como" style="padding-top:0">
+  <div class="reveal">
+    <div class="section-label">// como funciona</div>
+    <h2 class="section-title">Sem ambiente.<br>Sem setup.</h2>
+    <p class="section-sub">Você baixa o binário, abre na sua ferramenta favorita e vai. O writeup está lá quando você precisar — não antes.</p>
+  </div>
+
+  <div class="how-grid reveal">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <div class="how-card-title">Baixe o binário</div>
+      <div class="how-card-desc">ELF 64-bit compilado com gcc. Sem anti-debug artificial. Sem armadilha. O desafio está na lógica.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <div class="how-card-title">Analise com sua ferramenta</div>
+      <div class="how-card-desc">radare2, ghidra, gdb, objdump — o que você preferir. Cada writeup mostra múltiplos caminhos.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <div class="how-card-title">Leia o writeup</div>
+      <div class="how-card-desc">Solução mastigada com endereços reais, cálculo de offsets e variações pra explorar além do óbvio.</div>
+    </div>
+  </div>
+
+  <div class="tools-row reveal">
+    <div class="tool-chip"><div class="tool-dot"></div>radare2</div>
+    <div class="tool-chip"><div class="tool-dot"></div>ghidra</div>
+    <div class="tool-chip"><div class="tool-dot"></div>gdb + pwndbg</div>
+    <div class="tool-chip"><div class="tool-dot"></div>objdump</div>
+    <div class="tool-chip"><div class="tool-dot"></div>xxd + dd</div>
+    <div class="tool-chip"><div class="tool-dot"></div>python3 / pwntools</div>
+    <div class="tool-chip"><div class="tool-dot"></div>binutils</div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="about-strip reveal" id="sobre">
+  <div class="about-text">
+    <p>
+      <strong>CrackLab</strong> nasceu de uma obsessão: aprender reversing quebrando coisas que a gente mesmo faz.
+      Cada desafio aqui foi escrito do zero — sem pegar binário de CTF, sem repackaging de exercício velho.
+    </p>
+    <p>
+      A ideia é simples: <strong>se você criou o binário, você entende cada detalhe que o aprendiz vai encontrar.</strong>
+      Isso muda a qualidade do writeup. Muda o que é ensinado. Muda o click que acontece quando funciona.
+    </p>
+  </div>
+  <div style="flex-shrink:0">
+    <div style="font-size:11px;color:var(--dim);letter-spacing:.1em;margin-bottom:.75rem;text-transform:uppercase">stack</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;gap:12px;align-items:center;font-size:13px">
+        <span style="color:var(--green)">▸</span><span style="color:var(--muted)">ELF 64-bit / Linux</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;font-size:13px">
+        <span style="color:var(--green)">▸</span><span style="color:var(--muted)">gcc -O0 -no-pie</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;font-size:13px">
+        <span style="color:var(--green)">▸</span><span style="color:var(--muted)">C / C++ / ASM</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;font-size:13px">
+        <span style="color:var(--green)">▸</span><span style="color:var(--muted)">writeups em Markdown</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section reveal">
+  <div class="section-label" style="justify-content:center;margin-bottom:1.5rem">// comece agora</div>
+  <h2 class="section-title">Primeiro binário.<br><span style="color:var(--green)">Primeiro patch.</span></h2>
+  <p style="color:var(--muted);font-size:14px;margin-top:1rem">Clone o repositório e abra o desafio 02.</p>
+  <div class="cta-command">
+    <span class="prompt">$ </span>git clone github.com/cracklab/crackmes && cd crackmes/02-patch-retorno
+  </div>
+  <div style="margin-top:1.5rem">
+    <a href="#challenges" class="btn-primary">ver todos os desafios</a>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <span><span style="color:var(--green)">/</span>cracklab &mdash; 2026</span>
+    <span style="margin-left:15px; display:inline-flex; align-items:center; gap:6px;">
+      Criado por Willian Albarello
+      <a href="https://github.com/walbarellos" target="_blank" style="color:inherit; display:inline-flex; align-items:center;" aria-label="GitHub">
+        <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+    </span>
+  </div>
+  <div>
+    <span>feito com r2, gcc e muita curiosidade</span>
+    <span style="color:var(--dim); margin-left: 15px;">linux only &middot; elf64</span>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      const delay = e.target.dataset.delay;
+      if(delay) e.target.style.transitionDelay = delay;
+    }
+  });
+},{threshold:.1});
+
+document.querySelectorAll('.reveal').forEach((el,i) => {
+  el.dataset.delay = (i * 0.05) + 's';
+  io.observe(el);
+});
+
+// card hover — spawn glow at cursor position
+document.querySelectorAll('.challenge-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    card.style.setProperty('--mx', x + 'px');
+    card.style.setProperty('--my', y + 'px');
+  });
+});
+
+// trail node tooltip
+document.querySelectorAll('.trail-node').forEach(node => {
+  node.addEventListener('mouseenter', e => {
+    const title = node.getAttribute('title');
+    if(!title) return;
+    const tip = document.createElement('div');
+    tip.style.cssText = `
+      position:fixed;
+      background:#0d1117;
+      border:1px solid #1e2732;
+      color:#e6edf3;
+      font-family:'JetBrains Mono',monospace;
+      font-size:11px;
+      padding:4px 10px;
+      pointer-events:none;
+      z-index:1000;
+      letter-spacing:.05em;
+      white-space:nowrap;
+    `;
+    tip.textContent = title;
+    tip.id = 'tip';
+    document.body.appendChild(tip);
+    const r = node.getBoundingClientRect();
+    tip.style.left = (r.left + r.width/2 - tip.offsetWidth/2) + 'px';
+    tip.style.top = (r.top - 32) + 'px';
+  });
+  node.addEventListener('mouseleave', () => {
+    const t = document.getElementById('tip');
+    if(t) t.remove();
+  });
+});
+
+// smooth counter animation for stats
+function animateCount(el, target, duration=1200) {
+  let start = null;
+  const step = (ts) => {
+    if(!start) start = ts;
+    const p = Math.min((ts-start)/duration, 1);
+    el.textContent = Math.floor(p * target);
+    if(p < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  };
+  requestAnimationFrame(step);
+}
+
+const statsObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      document.querySelectorAll('.stat-val').forEach(el => {
+        const v = parseInt(el.textContent);
+        if(v > 0) animateCount(el, v);
+      });
+      statsObs.disconnect();
+    }
+  });
+},{threshold:.5});
+
+const statsEl = document.querySelector('.hero-stats');
+if(statsEl) statsObs.observe(statsEl);
+</script>
+</body>
+</html>

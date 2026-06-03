@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#04 — Patch de Constante · CRACKLAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b0f;--bg2:#0d1117;--bg3:#161b22;
+  --border:#1e2732;--border2:#2d3748;
+  --text:#e6edf3;--muted:#7d8590;--dim:#4a5568;
+  --green:#39d353;--green2:#26a641;
+  --amber:#f0c040;--red:#f85149;--blue:#58a6ff;--cyan:#79c0ff;
+  --mono:'JetBrains Mono',monospace;--display:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;line-height:1.6;overflow-x:hidden;cursor:crosshair}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:999}
+nav{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(8,11,15,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;z-index:100}
+.nav-logo{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em;color:var(--text);text-decoration:none}
+.nav-logo span{color:var(--green)}.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--text)}.nav-badge{font-size:11px;color:var(--green);border:1px solid var(--green2);padding:3px 10px;border-radius:2px;letter-spacing:.1em}
+.writeup-wrap{max-width:860px;margin:0 auto;padding:100px 2rem 6rem}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--dim);letter-spacing:.08em;margin-bottom:3rem;opacity:0;animation:fadeUp .5s ease forwards .1s}
+.breadcrumb a{color:var(--dim);text-decoration:none;transition:color .2s}.breadcrumb a:hover{color:var(--green)}.breadcrumb span{color:var(--border2)}
+.challenge-header{margin-bottom:4rem;opacity:0;animation:fadeUp .6s ease forwards .2s}
+.challenge-meta{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.meta-num{font-size:12px;color:var(--dim);letter-spacing:.1em}
+.meta-level{font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:2px;background:rgba(57,211,83,.1);color:var(--green);border:1px solid rgba(57,211,83,.2)}
+.meta-technique{font-size:12px;color:var(--muted);border:1px solid var(--border2);padding:3px 10px;letter-spacing:.05em}
+.challenge-title{font-family:var(--display);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;letter-spacing:-.04em;line-height:.95;margin-bottom:1rem}
+.challenge-title .accent{color:var(--cyan)}
+.challenge-tagline{font-size:16px;color:var(--muted);line-height:1.8;max-width:600px;margin-top:1rem}
+.story-block{background:var(--bg2);border:1px solid var(--border);padding:2rem;margin-bottom:3rem;position:relative;overflow:hidden}
+.story-block::before{content:'// história';position:absolute;top:1rem;right:1.5rem;font-size:10px;color:var(--dim);letter-spacing:.1em}
+.story-terminal{background:var(--bg3);border:1px solid var(--border2);margin-top:1.5rem}
+.terminal-bar{background:var(--bg3);padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.dot{width:10px;height:10px;border-radius:50%}.dot-r{background:#f85149}.dot-y{background:#f0c040}.dot-g{background:#39d353}
+.terminal-path{margin-left:8px;font-size:11px;color:var(--dim)}
+.terminal-body{padding:1.25rem 1.5rem;font-size:13px;line-height:2}
+.t-dim{color:var(--dim)}.t-green{color:var(--green)}.t-amber{color:var(--amber)}.t-red{color:var(--red)}.t-blue{color:var(--blue)}.t-cyan{color:var(--cyan)}
+.sec-label{font-size:10px;color:var(--dim);letter-spacing:.15em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:3rem}
+.concept-card{background:var(--bg);padding:1.5rem}
+.concept-name{font-size:12px;color:var(--cyan);letter-spacing:.08em;margin-bottom:.75rem;font-weight:700}
+.concept-desc{font-size:12px;color:var(--muted);line-height:1.8}
+.hint-box{border:1px solid var(--border2);padding:1.5rem 2rem;margin:2rem 0;position:relative;background:var(--bg2)}
+.hint-box::before{content:'> dica';position:absolute;top:-10px;left:1.5rem;background:var(--bg2);padding:0 8px;font-size:10px;color:var(--amber);letter-spacing:.1em;border:1px solid var(--border2)}
+.hint-box p{font-size:13px;color:var(--muted);line-height:1.8;font-style:italic}
+.step-block{margin-bottom:2.5rem}
+.step-num{font-size:11px;color:var(--dim);letter-spacing:.1em;margin-bottom:.5rem}
+.step-title{font-family:var(--display);font-size:20px;font-weight:700;margin-bottom:1rem;color:var(--text)}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:1rem}
+.code-block{background:var(--bg2);border:1px solid var(--border);overflow:hidden;margin:1.25rem 0}
+.code-header{background:var(--bg3);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.code-lang{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+.code-copy{font-size:10px;color:var(--dim);cursor:pointer;transition:color .2s;letter-spacing:.05em;background:none;border:none;font-family:var(--mono)}
+.code-copy:hover{color:var(--green)}
+.code-body{padding:1.25rem 1.5rem;overflow-x:auto}
+.code-body pre{margin:0;font-size:12px;line-height:1.9;white-space:pre}
+.hl-cmd{color:var(--green)}.hl-comment{color:var(--dim)}.hl-addr{color:var(--blue)}.hl-byte{color:var(--amber)}.hl-reg{color:var(--cyan)}.hl-str{color:var(--red)}.hl-kw{color:var(--muted)}
+.why-block{background:var(--bg3);border-left:3px solid var(--cyan);padding:1.5rem 2rem;margin:2rem 0}
+.why-block p{font-size:13px;color:var(--muted);line-height:1.8}
+.why-block strong{color:var(--text)}
+/* approaches */
+.approaches{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:1.5rem 0}
+.approach{background:var(--bg);padding:1.75rem}
+.approach-label{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem}
+.approach-title{font-family:var(--display);font-size:18px;font-weight:700;margin-bottom:.75rem}
+.approach.read .approach-title{color:var(--green)}
+.approach.write .approach-title{color:var(--cyan)}
+.approach-desc{font-size:12px;color:var(--muted);line-height:1.8}
+.alt-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:12px}
+.alt-table th{text-align:left;padding:10px 14px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border2)}
+.alt-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top}
+.alt-table tr:last-child td{border-bottom:none}
+.alt-table td:first-child{color:var(--cyan);font-weight:700}
+.alt-table tr:hover td{background:var(--bg2)}
+.question-box{border:1px solid var(--border2);padding:1.5rem 2rem;margin:2rem 0;background:var(--bg)}
+.question-box::before{content:'// pergunta pra reflexão';display:block;font-size:10px;color:var(--dim);letter-spacing:.1em;margin-bottom:.75rem}
+.question-box p{font-size:13px;color:var(--muted);line-height:1.8}
+.nav-challenges{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:5rem}
+.nav-ch-item{flex:1;background:var(--bg);padding:1.5rem;text-decoration:none;transition:background .2s;display:block}
+.nav-ch-item:hover{background:var(--bg2)}
+.nav-ch-dir{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.nav-ch-num{font-size:11px;color:var(--muted);margin-bottom:.25rem}
+.nav-ch-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text)}
+.nav-ch-item.next .nav-ch-title{color:var(--cyan)}.nav-ch-item.back .nav-ch-title{color:var(--muted)}.nav-ch-item.back{text-align:right}
+footer{border-top:1px solid var(--border);padding:2rem;display:flex;align-items:center;justify-content:space-between;color:var(--dim);font-size:11px;letter-spacing:.08em}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:768px){.nav-links{display:none}.concept-grid{grid-template-columns:1fr}.approaches{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html"><span>/</span>cracklab</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html#challenges">Desafios</a></li>
+    <li><a href="../../index.html#como">Como funciona</a></li>
+    <li><a href="../../index.html#sobre">Sobre</a></li>
+  </ul>
+  <span class="nav-badge">BETA</span>
+</nav>
+
+<div class="writeup-wrap">
+
+  <div class="breadcrumb">
+    <a href="../../index.html">/cracklab</a><span>/</span>
+    <a href="../../index.html#challenges">desafios</a><span>/</span>
+    <span style="color:var(--muted)">#04 — patch de constante</span>
+  </div>
+
+  <div class="challenge-header">
+    <div class="challenge-meta">
+      <span class="meta-num">// 04</span>
+      <span class="meta-level">iniciante</span>
+      <span class="meta-technique">constante hardcoded</span>
+    </div>
+    <h1 class="challenge-title">Patch de<br><span class="accent">Constante</span></h1>
+    <p class="challenge-tagline">O PIN está gravado no binário. Você pode lê-lo ou reescrevê-lo. Desta vez você escolhe.</p>
+  </div>
+
+  <!-- STORY -->
+  <div class="story-block reveal">
+    <p style="font-size:13px;color:var(--muted);line-height:1.8">
+      Cofre digital. Três tentativas. PIN desconhecido.<br><br>
+      Desta vez não tem função pra patchear. Não tem jump pra inverter.
+      A senha está gravada em algum lugar dentro do binário.
+      <strong style="color:var(--text)">Duas abordagens</strong>: ler a constante, ou reescrevê-la.
+    </p>
+    <div class="story-terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <span class="terminal-path">~/cracklab/04-patch-constante</span>
+      </div>
+      <div class="terminal-body">
+        <div style="color:var(--dim)">  ╔══════════════════════════════════╗</div>
+        <div style="color:var(--dim)">  ║     COFRE DIGITAL v2.0           ║</div>
+        <div style="color:var(--dim)">  ╚══════════════════════════════════╝</div>
+        <div><span class="t-dim">Senha (3 tentativa(s) restante(s)): </span><span class="t-amber">1234</span></div>
+        <div style="color:var(--red)">    ✗ Senha incorreta.</div>
+        <div><span class="t-dim">Senha (2 tentativa(s) restante(s)): </span><span class="t-amber">0000</span></div>
+        <div style="color:var(--red)">    ✗ Senha incorreta.</div>
+        <div><span class="t-dim">Senha (1 tentativa(s) restante(s)): </span><span class="t-amber">9999</span></div>
+        <div style="color:var(--red)">    ✗ Cofre bloqueado. Muitas tentativas.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCEITOS -->
+  <div class="reveal">
+    <div class="sec-label">// conceitos necessários</div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-name">CMP imm32</div>
+        <div class="concept-desc">A instrução <code style="color:var(--cyan)">cmp $0x1c7b, %eax</code> compara eax com uma constante imediata. Essa constante está embutida nos bytes da instrução — editável direto no arquivo.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">little-endian</div>
+        <div class="concept-desc">x86 armazena inteiros com o byte menos significativo primeiro. <code style="color:var(--amber)">0x1c7b</code> na memória: <code style="color:var(--amber)">7b 1c 00 00</code>. O objdump já converte pra você na leitura.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">strings</div>
+        <div class="concept-desc">Comando que extrai strings de texto de binários. PINs numéricos não aparecem (são inteiros), mas senhas em ASCII sim. Sempre vale tentar primeiro.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DICA -->
+  <div class="hint-box reveal">
+    <p>
+      Abre o disassembly do <code style="color:var(--cyan)">main</code>.<br>
+      Procura uma instrução <code style="color:var(--cyan)">cmp</code> comparando um registrador com um número.<br>
+      Esse número é a senha — mas em qual base está exibido?
+    </p>
+  </div>
+
+  <!-- ABORDAGENS -->
+  <div class="reveal" style="margin-top:3rem">
+    <div class="sec-label">// duas abordagens válidas</div>
+    <div class="approaches">
+      <div class="approach read">
+        <div class="approach-label">abordagem 1</div>
+        <div class="approach-title">Ler a constante</div>
+        <div class="approach-desc">Encontra o valor no disassembly, converte pra decimal, entra com a senha original. Sem tocar no binário. A mais rápida.</div>
+      </div>
+      <div class="approach write">
+        <div class="approach-label">abordagem 2</div>
+        <div class="approach-title">Trocar a constante</div>
+        <div class="approach-desc">Muda o valor que o binário aceita. A senha vira o que você quiser. Mais técnico, mais didático.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABORDAGEM 1 -->
+  <div class="step-block reveal" style="margin-top:2rem">
+    <div class="step-num">01 — abordagem rápida</div>
+    <div class="step-title">Ler a constante</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-cmd">objdump -d ./challenge | grep "cmp"</span></pre></div>
+    </div>
+    <div class="step-desc">Você vai encontrar:</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">asm</span></div>
+      <div class="code-body"><pre><span class="hl-addr">401235</span>:  <span class="hl-byte">3d 7b 1c 00 00</span>  <span class="hl-reg">cmp</span>  $0x1c7b, %eax    <span class="hl-comment">← a constante</span></pre></div>
+    </div>
+    <div class="step-desc">Converte <code style="color:var(--amber)">0x1c7b</code> para decimal:</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python3</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-cmd">python3 -c "print(0x1c7b)"</span>
+<span class="hl-comment"># 7291</span></pre></div>
+    </div>
+    <div class="story-terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <span class="terminal-path">~/cracklab/04-patch-constante $ ./challenge</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-dim">Senha (3 tentativa(s) restante(s)): </span><span class="t-green">7291</span></div>
+        <div style="margin-top:8px;color:var(--green)">  ✓ Cofre aberto. Bem-vindo.</div>
+        <div style="color:var(--green)">  &gt; Conteudo: FLAG{patch_the_constant}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABORDAGEM 2 -->
+  <div class="step-block reveal">
+    <div class="step-num">02 — abordagem de patch</div>
+    <div class="step-title">Trocar a constante no binário</div>
+    <div class="step-desc">
+      Queremos que <code style="color:var(--cyan)">1234</code> seja a senha válida.<br>
+      <code style="color:var(--cyan)">1234</code> em hex = <code style="color:var(--amber)">0x4d2</code>.<br>
+      Em little-endian 4 bytes: <code style="color:var(--amber)">d2 04 00 00</code>.
+    </div>
+    <div class="why-block">
+      <p>
+        A instrução <code style="color:var(--cyan)">cmp</code> em <code style="color:var(--blue)">0x401235</code> tem o encoding:<br>
+        <code style="color:var(--amber)">3d 7b 1c 00 00</code> → cmp $0x1c7b, %eax<br><br>
+        O byte <strong>3d</strong> é o opcode do cmp. Os 4 bytes seguintes são a constante em little-endian: <strong>7b 1c 00 00</strong>.<br>
+        Você só vai mexer nesses 4 bytes — em <strong>0x401236</strong>.
+      </p>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">radare2</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-cmd">r2 -w ./challenge</span>
+<span class="hl-cmd">s 0x401236</span>         <span class="hl-comment">; pula o opcode 3d, vai direto pra constante</span>
+<span class="hl-cmd">wx d2 04 00 00</span>     <span class="hl-comment">; 1234 em little-endian</span>
+<span class="hl-cmd">q</span></pre></div>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash — com dd</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-cmd">printf '\xd2\x04\x00\x00' | dd of=./challenge bs=1 seek=$((0x401236)) conv=notrunc 2>/dev/null</span></pre></div>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">verificação</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-cmd">objdump -d ./challenge | grep "cmp.*%eax"</span>
+<span class="hl-comment"># 401235:  cmp  $0x4d2, %eax    ← 1234 agora é a senha</span></pre></div>
+    </div>
+  </div>
+
+  <!-- LITTLE ENDIAN -->
+  <div class="reveal" style="margin-top:3rem">
+    <div class="sec-label">// por que os bytes parecem ao contrário</div>
+    <div class="why-block">
+      <p>
+        x86 usa <strong>little-endian</strong> — byte menos significativo primeiro.<br><br>
+        <strong>7291</strong> em hex = <strong>0x00001C7B</strong><br>
+        Na memória e no binário: <strong>7B 1C 00 00</strong><br><br>
+        O objdump converte pra você na exibição, mas se você abrir com <code style="color:var(--cyan)">xxd</code> vai ver os bytes na ordem invertida.
+        Isso vai importar muito nos próximos desafios — especialmente no #05 com offsets de call.
+      </p>
+    </div>
+  </div>
+
+  <!-- VARIAÇÕES -->
+  <div class="reveal" style="margin-top:2rem">
+    <div class="sec-label">// variações pra explorar</div>
+    <table class="alt-table">
+      <thead>
+        <tr><th>variação</th><th>onde</th><th>o que faz</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>mudar tentativas</td><td><code style="color:var(--blue)">0x401274</code></td><td>Troca <code>02</code> por <code>63</code> na instrução cmpl. 99 tentativas em vez de 3.</td></tr>
+        <tr><td>ler sem patchear</td><td>—</td><td>A abordagem mais rápida: descobre a senha, entra normalmente. Zero rastro no binário.</td></tr>
+        <tr><td>brutar</td><td>—</td><td>4 dígitos = 10.000 combinações. Script de força bruta em bash. Lento mas funciona.</td></tr>
+      </tbody>
+    </table>
+    <div class="question-box">
+      <p>Qual das abordagens (ler, patchear, brutar) você usaria se o binário verificasse a integridade de si mesmo antes de rodar?</p>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-challenges reveal">
+    <a href="../03-inverter-jump/index.html" class="nav-ch-item back">
+      <div class="nav-ch-dir">← anterior</div>
+      <div class="nav-ch-num">// 03</div>
+      <div class="nav-ch-title">Inverter Jump</div>
+    </a>
+    <a href="../05-redirect-funcao/index.html" class="nav-ch-item next" style="text-align:right">
+      <div class="nav-ch-dir">próximo →</div>
+      <div class="nav-ch-num">// 05</div>
+      <div class="nav-ch-title">Redirect de Função</div>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div>
+    <span><span style="color:var(--green)">/</span>cracklab &mdash; 2026</span>
+    <span style="margin-left:15px; display:inline-flex; align-items:center; gap:6px;">
+      Criado por Willian Albarello
+      <a href="https://github.com/walbarellos" target="_blank" style="color:inherit; display:inline-flex; align-items:center;" aria-label="GitHub">
+        <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+    </span>
+  </div>
+  <div>
+    <span>feito com r2, gcc e muita curiosidade</span>
+    <span style="color:var(--dim); margin-left: 15px;">linux only &middot; elf64</span>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+function copyCode(btn){
+  const code = btn.closest('.code-block').querySelector('pre').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'copiado!';
+    setTimeout(() => btn.textContent = 'copiar', 1500);
+  });
+}
+</script>
+</body>
+</html>

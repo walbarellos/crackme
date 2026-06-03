@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#03 — Inverter Jump · CRACKLAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b0f;--bg2:#0d1117;--bg3:#161b22;
+  --border:#1e2732;--border2:#2d3748;
+  --text:#e6edf3;--muted:#7d8590;--dim:#4a5568;
+  --green:#39d353;--green2:#26a641;
+  --amber:#f0c040;--red:#f85149;--blue:#58a6ff;--cyan:#79c0ff;
+  --mono:'JetBrains Mono',monospace;--display:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;line-height:1.6;overflow-x:hidden;cursor:crosshair}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:999}
+nav{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(8,11,15,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;z-index:100}
+.nav-logo{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em;color:var(--text);text-decoration:none}
+.nav-logo span{color:var(--green)}.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--text)}.nav-badge{font-size:11px;color:var(--green);border:1px solid var(--green2);padding:3px 10px;border-radius:2px;letter-spacing:.1em}
+.writeup-wrap{max-width:860px;margin:0 auto;padding:100px 2rem 6rem}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--dim);letter-spacing:.08em;margin-bottom:3rem;opacity:0;animation:fadeUp .5s ease forwards .1s}
+.breadcrumb a{color:var(--dim);text-decoration:none;transition:color .2s}.breadcrumb a:hover{color:var(--green)}.breadcrumb span{color:var(--border2)}
+.challenge-header{margin-bottom:4rem;opacity:0;animation:fadeUp .6s ease forwards .2s}
+.challenge-meta{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.meta-num{font-size:12px;color:var(--dim);letter-spacing:.1em}
+.meta-level{font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:2px;background:rgba(57,211,83,.1);color:var(--green);border:1px solid rgba(57,211,83,.2)}
+.meta-technique{font-size:12px;color:var(--muted);border:1px solid var(--border2);padding:3px 10px;letter-spacing:.05em}
+.challenge-title{font-family:var(--display);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;letter-spacing:-.04em;line-height:.95;margin-bottom:1rem}
+.challenge-title .accent{color:var(--amber)}
+.challenge-tagline{font-size:16px;color:var(--muted);line-height:1.8;max-width:600px;margin-top:1rem}
+.story-block{background:var(--bg2);border:1px solid var(--border);padding:2rem;margin-bottom:3rem;position:relative;overflow:hidden}
+.story-block::before{content:'// história';position:absolute;top:1rem;right:1.5rem;font-size:10px;color:var(--dim);letter-spacing:.1em}
+.story-terminal{background:var(--bg3);border:1px solid var(--border2);margin-top:1.5rem}
+.terminal-bar{background:var(--bg3);padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.dot{width:10px;height:10px;border-radius:50%}.dot-r{background:#f85149}.dot-y{background:#f0c040}.dot-g{background:#39d353}
+.terminal-path{margin-left:8px;font-size:11px;color:var(--dim)}
+.terminal-body{padding:1.25rem 1.5rem;font-size:13px;line-height:2}
+.t-dim{color:var(--dim)}.t-green{color:var(--green)}.t-amber{color:var(--amber)}.t-red{color:var(--red)}.t-blue{color:var(--blue)}.t-cyan{color:var(--cyan)}
+.sec-label{font-size:10px;color:var(--dim);letter-spacing:.15em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:3rem}
+.concept-card{background:var(--bg);padding:1.5rem}
+.concept-name{font-size:12px;color:var(--amber);letter-spacing:.08em;margin-bottom:.75rem;font-weight:700}
+.concept-desc{font-size:12px;color:var(--muted);line-height:1.8}
+.hint-box{border:1px solid var(--border2);padding:1.5rem 2rem;margin:2rem 0;position:relative;background:var(--bg2)}
+.hint-box::before{content:'> dica';position:absolute;top:-10px;left:1.5rem;background:var(--bg2);padding:0 8px;font-size:10px;color:var(--amber);letter-spacing:.1em;border:1px solid var(--border2)}
+.hint-box p{font-size:13px;color:var(--muted);line-height:1.8;font-style:italic}
+.step-block{margin-bottom:2.5rem}
+.step-num{font-size:11px;color:var(--dim);letter-spacing:.1em;margin-bottom:.5rem}
+.step-title{font-family:var(--display);font-size:20px;font-weight:700;margin-bottom:1rem;color:var(--text)}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:1rem}
+.code-block{background:var(--bg2);border:1px solid var(--border);overflow:hidden;margin:1.25rem 0}
+.code-header{background:var(--bg3);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.code-lang{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+.code-copy{font-size:10px;color:var(--dim);cursor:pointer;transition:color .2s;letter-spacing:.05em;background:none;border:none;font-family:var(--mono)}
+.code-copy:hover{color:var(--green)}
+.code-body{padding:1.25rem 1.5rem;overflow-x:auto}
+.code-body pre{margin:0;font-size:12px;line-height:1.9;white-space:pre}
+.hl-cmd{color:var(--green)}.hl-comment{color:var(--dim)}.hl-addr{color:var(--blue)}.hl-byte{color:var(--amber)}.hl-reg{color:var(--cyan)}.hl-str{color:var(--red)}.hl-kw{color:var(--muted)}
+.flow-wrap{background:var(--bg2);border:1px solid var(--border);padding:2rem;margin:2rem 0;overflow-x:auto}
+.flow-title{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem}
+.why-block{background:var(--bg3);border-left:3px solid var(--amber);padding:1.5rem 2rem;margin:2rem 0}
+.why-block p{font-size:13px;color:var(--muted);line-height:1.8}
+.why-block strong{color:var(--text)}
+.alt-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:12px}
+.alt-table th{text-align:left;padding:10px 14px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border2)}
+.alt-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top}
+.alt-table tr:last-child td{border-bottom:none}
+.alt-table td:first-child{color:var(--cyan);font-weight:700}
+.alt-table tr:hover td{background:var(--bg2)}
+.question-box{border:1px solid var(--border2);padding:1.5rem 2rem;margin:2rem 0;background:var(--bg)}
+.question-box::before{content:'// pergunta pra reflexão';display:block;font-size:10px;color:var(--dim);letter-spacing:.1em;margin-bottom:.75rem}
+.question-box p{font-size:13px;color:var(--muted);line-height:1.8}
+.nav-challenges{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:5rem}
+.nav-ch-item{flex:1;background:var(--bg);padding:1.5rem;text-decoration:none;transition:background .2s;display:block}
+.nav-ch-item:hover{background:var(--bg2)}
+.nav-ch-dir{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.nav-ch-num{font-size:11px;color:var(--muted);margin-bottom:.25rem}
+.nav-ch-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text)}
+.nav-ch-item.next .nav-ch-title{color:var(--amber)}.nav-ch-item.back .nav-ch-title{color:var(--muted)}.nav-ch-item.back{text-align:right}
+footer{border-top:1px solid var(--border);padding:2rem;display:flex;align-items:center;justify-content:space-between;color:var(--dim);font-size:11px;letter-spacing:.08em}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:768px){.nav-links{display:none}.concept-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html"><span>/</span>cracklab</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html#challenges">Desafios</a></li>
+    <li><a href="../../index.html#como">Como funciona</a></li>
+    <li><a href="../../index.html#sobre">Sobre</a></li>
+  </ul>
+  <span class="nav-badge">BETA</span>
+</nav>
+
+<div class="writeup-wrap">
+
+  <div class="breadcrumb">
+    <a href="../../index.html">/cracklab</a><span>/</span>
+    <a href="../../index.html#challenges">desafios</a><span>/</span>
+    <span style="color:var(--muted)">#03 — inverter jump</span>
+  </div>
+
+  <div class="challenge-header">
+    <div class="challenge-meta">
+      <span class="meta-num">// 03</span>
+      <span class="meta-level">iniciante</span>
+      <span class="meta-technique">inverter jump condicional</span>
+    </div>
+    <h1 class="challenge-title">Inverter<br><span class="accent">Jump</span></h1>
+    <p class="challenge-tagline">A lógica está certa. O portão está virado. Um byte resolve tudo.</p>
+  </div>
+
+  <!-- STORY -->
+  <div class="story-block reveal">
+    <p style="font-size:13px;color:var(--muted);line-height:1.8">
+      Sistema de ativação. Código de 8 dígitos. Você não tem o código. E não precisa ter.<br><br>
+      No desafio #02 você aprendeu a mentir dentro da função.
+      Desta vez, a função está <strong style="color:var(--text)">certa</strong> — ela valida direito.
+      O problema está em quem <strong style="color:var(--text)">interpreta o resultado</strong>.
+    </p>
+    <div class="story-terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <span class="terminal-path">~/cracklab/03-inverter-jump</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-dim">$</span> <span class="t-green">./challenge</span></div>
+        <div style="color:var(--dim)">=========================================</div>
+        <div style="color:var(--dim)">   SISTEMA DE ATIVACAO v1.0</div>
+        <div style="color:var(--dim)">=========================================</div>
+        <div><span class="t-dim">Insira o codigo de ativacao (8 digitos): </span><span class="t-amber">12345678</span></div>
+        <div style="margin-top:8px;color:var(--red)">  [X]  Codigo invalido. Tente novamente.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCEITOS -->
+  <div class="reveal">
+    <div class="sec-label">// conceitos necessários</div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-name">JE — jump if equal</div>
+        <div class="concept-desc">Opcode <code style="color:var(--amber)">74</code>. Pula para outro endereço quando ZF=1 (resultado anterior foi zero). Usado após <code style="color:var(--cyan)">test eax, eax</code> quando função retorna 0.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">JNE — jump if not equal</div>
+        <div class="concept-desc">Opcode <code style="color:var(--amber)">75</code>. Pula quando ZF=0 (resultado foi diferente de zero). Exatamente o oposto do <code style="color:var(--cyan)">je</code> — diferem por apenas 1 bit.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">zero flag (ZF)</div>
+        <div class="concept-desc"><code style="color:var(--cyan)">test eax, eax</code> faz AND lógico de eax com si mesmo. Se eax=0, seta ZF=1. Os jumps condicionais leem esse flag pra decidir se pulam.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DICA -->
+  <div class="hint-box reveal">
+    <p>
+      Abre o disassembly do <code style="color:var(--cyan)">main</code>.<br>
+      Procura o <code style="color:var(--cyan)">call validate_code</code>.<br>
+      O que vem logo depois? Se o resultado é <code style="color:var(--amber)">0</code> (inválido), o programa pula pra onde?<br>
+      E se você fizesse ele pular pro lado errado?
+    </p>
+  </div>
+
+  <!-- SOLUÇÃO -->
+  <div class="reveal" style="margin-top:3rem">
+    <div class="sec-label">// solução passo a passo</div>
+  </div>
+
+  <!-- PASSO 1 -->
+  <div class="step-block reveal">
+    <div class="step-num">01</div>
+    <div class="step-title">Localiza o ponto de decisão no main</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-cmd">objdump -d ./challenge | grep -A 10 "call.*validate_code"</span></pre></div>
+    </div>
+    <div class="step-desc">Você vai ver:</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">asm</span></div>
+      <div class="code-body"><pre><span class="hl-addr">4012bc</span>:  <span class="hl-byte">e8 f5 fe ff ff</span>   <span class="hl-reg">call</span>  4011b6 &lt;validate_code&gt;
+<span class="hl-addr">4012c1</span>:  <span class="hl-byte">85 c0</span>            <span class="hl-reg">test</span>  %eax, %eax         <span class="hl-comment">; eax = retorno (0 ou 1)</span>
+<span class="hl-addr">4012c3</span>:  <span class="hl-byte">74 2f</span>            <span class="hl-reg">je</span>    4012f4             <span class="hl-comment">; se 0 (inválido) → pula pro erro</span>
+<span class="hl-addr">4012c5</span>:  ...                                          <span class="hl-comment">; senão → conteúdo válido</span></pre></div>
+    </div>
+    <div class="why-block">
+      <p>
+        O <strong>je</strong> em <strong>0x4012c3</strong> é o portão.<br>
+        Se <strong>validate_code</strong> retorna <strong>0</strong>, ZF=1, e <strong>je</strong> pula pro bloco de erro.<br>
+        Se retorna <strong>1</strong>, não pula — cai no bloco de sucesso.<br><br>
+        A função está correta. Só o portão está do lado errado.
+      </p>
+    </div>
+  </div>
+
+  <!-- PASSO 2 -->
+  <div class="step-block reveal">
+    <div class="step-num">02</div>
+    <div class="step-title">A inversão — um byte</div>
+    <div class="step-desc">
+      <code style="color:var(--amber)">74</code> = je (pula se zero) →
+      <code style="color:var(--green)">75</code> = jne (pula se não-zero).
+      Diferem por exatamente 1 bit.
+    </div>
+    <div class="flow-wrap">
+      <div class="flow-title">// o que a troca de um byte faz</div>
+      <pre style="font-size:12px;line-height:2;color:var(--muted)"><span class="hl-comment">validate_code("12345678") → retorna 0 (código inválido)</span>
+
+<span class="hl-comment">antes (je):</span>
+  test eax, eax   → ZF = 1
+  <span class="hl-byte">74</span> 2f           → je → ZF=1, <span style="color:var(--red)">PULA → erro</span>
+
+<span class="hl-comment">depois (jne):</span>
+  test eax, eax   → ZF = 1
+  <span class="hl-byte">75</span> 2f           → jne → ZF=1, <span style="color:var(--green)">NÃO PULA → sucesso ✓</span></pre>
+    </div>
+  </div>
+
+  <!-- PASSO 3 -->
+  <div class="step-block reveal">
+    <div class="step-num">03</div>
+    <div class="step-title">Confirma o byte e aplica o patch</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-comment"># confirma o byte atual</span>
+<span class="hl-cmd">objdump -d ./challenge | grep "4012c3"</span>
+<span class="hl-comment"># esperado: 4012c3:  74 2f   je  4012f4</span></pre></div>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">radare2</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-cmd">r2 -w ./challenge</span>
+<span class="hl-cmd">s 0x4012c3</span>
+<span class="hl-cmd">wx 75</span>           <span class="hl-comment">; só o opcode — offset 2f não muda</span>
+<span class="hl-cmd">q</span></pre></div>
+    </div>
+    <div class="step-desc">Alternativa sem radare2 — com dd direto:</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash — sem radare2</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-comment"># patch com printf + dd (funciona sem nenhuma ferramenta extra)</span>
+<span class="hl-cmd">printf '\x75' | dd of=./challenge bs=1 seek=$((0x4012c3)) conv=notrunc 2>/dev/null</span></pre></div>
+    </div>
+  </div>
+
+  <!-- PASSO 4 -->
+  <div class="step-block reveal">
+    <div class="step-num">04</div>
+    <div class="step-title">Verifica e roda</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-comment"># verifica: deve mostrar jne agora</span>
+<span class="hl-cmd">objdump -d ./challenge | grep "4012c3"</span>
+<span class="hl-comment"># 4012c3:  75 2f   jne  4012f4</span></pre></div>
+    </div>
+    <div class="story-terminal" style="margin-top:1rem">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <span class="terminal-path">~/cracklab/03-inverter-jump $ ./challenge</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-dim">Insira o codigo de ativacao (8 digitos): </span><span class="t-amber">00000000</span></div>
+        <div style="margin-top:8px;color:var(--green)">  [OK] Codigo valido. Sistema ativado.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JUMPS TABLE -->
+  <div class="reveal" style="margin-top:3rem">
+    <div class="sec-label">// cola rápida — jumps condicionais</div>
+    <table class="alt-table">
+      <thead>
+        <tr><th>instrução</th><th>opcode</th><th>pula quando</th><th>par oposto</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>je</td><td><code style="color:var(--amber)">74</code></td><td>ZF=1 (igual / zero)</td><td>jne (75)</td></tr>
+        <tr><td>jne</td><td><code style="color:var(--amber)">75</code></td><td>ZF=0 (diferente / não-zero)</td><td>je (74)</td></tr>
+        <tr><td>jl</td><td><code style="color:var(--amber)">7C</code></td><td>SF≠OF (menor, signed)</td><td>jge (7D)</td></tr>
+        <tr><td>jge</td><td><code style="color:var(--amber)">7D</code></td><td>SF=OF (maior ou igual)</td><td>jl (7C)</td></tr>
+        <tr><td>jle</td><td><code style="color:var(--amber)">7E</code></td><td>ZF=1 ou SF≠OF</td><td>jg (7F)</td></tr>
+        <tr><td>jg</td><td><code style="color:var(--amber)">7F</code></td><td>ZF=0 e SF=OF</td><td>jle (7E)</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--dim);margin-top:.5rem">Cada par de opostos difere por 1 bit no opcode. <code style="color:var(--amber)">74</code> ↔ <code style="color:var(--amber)">75</code> é literalmente um toggle de bit.</p>
+  </div>
+
+  <!-- ALTERNATIVAS -->
+  <div class="reveal" style="margin-top:2.5rem">
+    <div class="sec-label">// variações pra explorar</div>
+    <table class="alt-table">
+      <thead>
+        <tr><th>método</th><th>onde</th><th>o que faz</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>je → jne</td><td><code style="color:var(--blue)">0x4012c3</code> — main</td><td>Um byte. Portão invertido. A solução mais limpa.</td></tr>
+        <tr><td>patch em validate_code</td><td><code style="color:var(--blue)">0x401245</code> — função</td><td>Troca <code>sete</code> por <code>setne</code>: retorna 1 pra qualquer coisa que não seja o código correto.</td></tr>
+        <tr><td>NOP no exit</td><td><code style="color:var(--blue)">0x401326</code> — main</td><td>5 NOPs no call de exit(1). Funciona mas output mostra erro. Feio.</td></tr>
+      </tbody>
+    </table>
+    <div class="question-box">
+      <p>Qual dessas três abordagens (je→jne, patch na função, NOP no exit) deixaria menos rastro numa análise forense do binário?</p>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-challenges reveal">
+    <a href="../02-patch-retorno/index.html" class="nav-ch-item back">
+      <div class="nav-ch-dir">← anterior</div>
+      <div class="nav-ch-num">// 02</div>
+      <div class="nav-ch-title">Patch de Retorno</div>
+    </a>
+    <a href="../04-patch-constante/index.html" class="nav-ch-item next" style="text-align:right">
+      <div class="nav-ch-dir">próximo →</div>
+      <div class="nav-ch-num">// 04</div>
+      <div class="nav-ch-title">Patch de Constante</div>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div>
+    <span><span style="color:var(--green)">/</span>cracklab &mdash; 2026</span>
+    <span style="margin-left:15px; display:inline-flex; align-items:center; gap:6px;">
+      Criado por Willian Albarello
+      <a href="https://github.com/walbarellos" target="_blank" style="color:inherit; display:inline-flex; align-items:center;" aria-label="GitHub">
+        <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+    </span>
+  </div>
+  <div>
+    <span>feito com r2, gcc e muita curiosidade</span>
+    <span style="color:var(--dim); margin-left: 15px;">linux only &middot; elf64</span>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+function copyCode(btn){
+  const code = btn.closest('.code-block').querySelector('pre').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'copiado!';
+    setTimeout(() => btn.textContent = 'copiar', 1500);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#06 — Keygen Simples · CRACKLAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b0f;--bg2:#0d1117;--bg3:#161b22;
+  --border:#1e2732;--border2:#2d3748;
+  --text:#e6edf3;--muted:#7d8590;--dim:#4a5568;
+  --green:#39d353;--green2:#26a641;
+  --amber:#f0c040;--red:#f85149;--blue:#58a6ff;--cyan:#79c0ff;
+  --mono:'JetBrains Mono',monospace;--display:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;line-height:1.6;overflow-x:hidden;cursor:crosshair}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:999}
+nav{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(8,11,15,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;z-index:100}
+.nav-logo{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em;color:var(--text);text-decoration:none}
+.nav-logo span{color:var(--green)}.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--text)}.nav-badge{font-size:11px;color:var(--green);border:1px solid var(--green2);padding:3px 10px;border-radius:2px;letter-spacing:.1em}
+.writeup-wrap{max-width:860px;margin:0 auto;padding:100px 2rem 6rem}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--dim);letter-spacing:.08em;margin-bottom:3rem;opacity:0;animation:fadeUp .5s ease forwards .1s}
+.breadcrumb a{color:var(--dim);text-decoration:none;transition:color .2s}.breadcrumb a:hover{color:var(--green)}.breadcrumb span{color:var(--border2)}
+.challenge-header{margin-bottom:4rem;opacity:0;animation:fadeUp .6s ease forwards .2s}
+.challenge-meta{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.meta-num{font-size:12px;color:var(--dim);letter-spacing:.1em}
+.meta-level{font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:2px;background:rgba(240,192,64,.1);color:var(--amber);border:1px solid rgba(240,192,64,.2)}
+.meta-technique{font-size:12px;color:var(--muted);border:1px solid var(--border2);padding:3px 10px;letter-spacing:.05em}
+.challenge-title{font-family:var(--display);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;letter-spacing:-.04em;line-height:.95;margin-bottom:1rem}
+.challenge-title .accent{color:var(--green)}
+.challenge-tagline{font-size:16px;color:var(--muted);line-height:1.8;max-width:600px;margin-top:1rem}
+.story-block{background:var(--bg2);border:1px solid var(--border);padding:2rem;margin-bottom:3rem;position:relative;overflow:hidden}
+.story-block::before{content:'// história';position:absolute;top:1rem;right:1.5rem;font-size:10px;color:var(--dim);letter-spacing:.1em}
+.story-terminal{background:var(--bg3);border:1px solid var(--border2);margin-top:1.5rem}
+.terminal-bar{background:var(--bg3);padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.dot{width:10px;height:10px;border-radius:50%}.dot-r{background:#f85149}.dot-y{background:#f0c040}.dot-g{background:#39d353}
+.terminal-path{margin-left:8px;font-size:11px;color:var(--dim)}
+.terminal-body{padding:1.25rem 1.5rem;font-size:13px;line-height:2}
+.t-dim{color:var(--dim)}.t-green{color:var(--green)}.t-amber{color:var(--amber)}.t-red{color:var(--red)}.t-blue{color:var(--blue)}.t-cyan{color:var(--cyan)}
+.sec-label{font-size:10px;color:var(--dim);letter-spacing:.15em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:3rem}
+.concept-card{background:var(--bg);padding:1.5rem}
+.concept-name{font-size:12px;color:var(--green);letter-spacing:.08em;margin-bottom:.75rem;font-weight:700}
+.concept-desc{font-size:12px;color:var(--muted);line-height:1.8}
+.hint-box{border:1px solid var(--border2);padding:1.5rem 2rem;margin:2rem 0;position:relative;background:var(--bg2)}
+.hint-box::before{content:'> dica';position:absolute;top:-10px;left:1.5rem;background:var(--bg2);padding:0 8px;font-size:10px;color:var(--amber);letter-spacing:.1em;border:1px solid var(--border2)}
+.hint-box p{font-size:13px;color:var(--muted);line-height:1.8;font-style:italic}
+.step-block{margin-bottom:2.5rem}
+.step-num{font-size:11px;color:var(--dim);letter-spacing:.1em;margin-bottom:.5rem}
+.step-title{font-family:var(--display);font-size:20px;font-weight:700;margin-bottom:1rem;color:var(--text)}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:1rem}
+.code-block{background:var(--bg2);border:1px solid var(--border);overflow:hidden;margin:1.25rem 0}
+.code-header{background:var(--bg3);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.code-lang{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+.code-copy{font-size:10px;color:var(--dim);cursor:pointer;transition:color .2s;letter-spacing:.05em;background:none;border:none;font-family:var(--mono)}
+.code-copy:hover{color:var(--green)}
+.code-body{padding:1.25rem 1.5rem;overflow-x:auto}
+.code-body pre{margin:0;font-size:12px;line-height:1.9;white-space:pre}
+.hl-cmd{color:var(--green)}.hl-comment{color:var(--dim)}.hl-addr{color:var(--blue)}.hl-byte{color:var(--amber)}.hl-reg{color:var(--cyan)}.hl-str{color:var(--red)}.hl-kw{color:var(--muted)}
+.math-box{background:var(--bg3);border:1px solid var(--border2);padding:1.75rem 2rem;margin:1.5rem 0}
+.math-box .math-title{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.25rem}
+.math-box pre{font-size:12px;line-height:2;color:var(--muted)}
+.why-block{background:var(--bg3);border-left:3px solid var(--green);padding:1.5rem 2rem;margin:2rem 0}
+.why-block p{font-size:13px;color:var(--muted);line-height:1.8}
+.why-block strong{color:var(--text)}
+.alt-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:12px}
+.alt-table th{text-align:left;padding:10px 14px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border2)}
+.alt-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top}
+.alt-table tr:last-child td{border-bottom:none}
+.alt-table td:first-child{color:var(--cyan);font-weight:700}
+.alt-table tr:hover td{background:var(--bg2)}
+.question-box{border:1px solid var(--border2);padding:1.5rem 2rem;margin:2rem 0;background:var(--bg)}
+.question-box::before{content:'// pergunta pra reflexão';display:block;font-size:10px;color:var(--dim);letter-spacing:.1em;margin-bottom:.75rem}
+.question-box p{font-size:13px;color:var(--muted);line-height:1.8}
+.nav-challenges{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:5rem}
+.nav-ch-item{flex:1;background:var(--bg);padding:1.5rem;text-decoration:none;transition:background .2s;display:block}
+.nav-ch-item:hover{background:var(--bg2)}
+.nav-ch-dir{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.nav-ch-num{font-size:11px;color:var(--muted);margin-bottom:.25rem}
+.nav-ch-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text)}
+.nav-ch-item.next .nav-ch-title{color:var(--amber)}.nav-ch-item.back .nav-ch-title{color:var(--muted)}.nav-ch-item.back{text-align:right}
+footer{border-top:1px solid var(--border);padding:2rem;display:flex;align-items:center;justify-content:space-between;color:var(--dim);font-size:11px;letter-spacing:.08em}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:768px){.nav-links{display:none}.concept-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html"><span>/</span>cracklab</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html#challenges">Desafios</a></li>
+    <li><a href="../../index.html#como">Como funciona</a></li>
+    <li><a href="../../index.html#sobre">Sobre</a></li>
+  </ul>
+  <span class="nav-badge">BETA</span>
+</nav>
+
+<div class="writeup-wrap">
+
+  <div class="breadcrumb">
+    <a href="../../index.html">/cracklab</a><span>/</span>
+    <a href="../../index.html#challenges">desafios</a><span>/</span>
+    <span style="color:var(--muted)">#06 — keygen simples</span>
+  </div>
+
+  <div class="challenge-header">
+    <div class="challenge-meta">
+      <span class="meta-num">// 06</span>
+      <span class="meta-level">intermediário</span>
+      <span class="meta-technique">reversão de algoritmo</span>
+    </div>
+    <h1 class="challenge-title">Keygen<br><span class="accent">Simples</span></h1>
+    <p class="challenge-tagline">Pela primeira vez, você não patcha nada. Você entende o algoritmo e escreve o gerador.</p>
+  </div>
+
+  <!-- STORY -->
+  <div class="story-block reveal">
+    <p style="font-size:13px;color:var(--muted);line-height:1.8">
+      Ativador de software. Pede nome de usuário e uma chave no formato <code style="color:var(--cyan)">XXXX-XXXX</code>.<br><br>
+      Até aqui você só precisou patchear. Desta vez o objetivo é diferente:<br>
+      <strong style="color:var(--text)">entender o que a função <code style="color:var(--green)">generate_key</code> faz e escrever um keygen que produza a chave certa para qualquer nome.</strong>
+    </p>
+    <div class="story-terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <span class="terminal-path">~/cracklab/06-keygen-simples</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-dim">$</span> <span class="t-green">./challenge</span></div>
+        <div style="color:var(--dim)">Nome de usuário: <span class="t-amber">willian</span></div>
+        <div style="color:var(--dim)">Chave (XXXX-XXXX): <span class="t-amber">0000-0000</span></div>
+        <div style="color:var(--red)">  ✗ Chave inválida para o usuário 'willian'.</div>
+        <div style="margin-top:8px"><span class="t-dim">$</span> <span class="t-green">./challenge</span></div>
+        <div style="color:var(--dim)">Nome de usuário: <span class="t-amber">willian</span></div>
+        <div style="color:var(--dim)">Chave (XXXX-XXXX): <span class="t-amber">0006-0545</span></div>
+        <div style="color:var(--green)">  ✓ CHAVE VÁLIDA — Software ativado.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCEITOS -->
+  <div class="reveal">
+    <div class="sec-label">// conceitos necessários</div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-name">REVERSÃO DE ALGORITMO</div>
+        <div class="concept-desc">Diferente de patch, aqui você lê o disassembly e reconstrói a lógica em Python. O objetivo é produzir o input certo, não corromper o fluxo.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">IMUL — multiplicação</div>
+        <div class="concept-desc"><code style="color:var(--amber)">imul</code> multiplica dois operandos com sinal. Frequentemente aparece em loops de hash como <code style="color:var(--cyan)">acc += byte * (pos + 1)</code>.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">MODULO ARITMÉTICO</div>
+        <div class="concept-desc">O compilador otimiza <code style="color:var(--cyan)">% 9973</code> com multiplicação por recíproco. O resultado é equivalente ao módulo — mas parece horrível no disassembly.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">LITTLE-ENDIAN + ATOI</div>
+        <div class="concept-desc">A chave é lida como string decimal e convertida por <code style="color:var(--cyan)">atoi</code>. Então o valor gerado é comparado direto. Formatar com <code style="color:var(--cyan)">:08d</code> dá o XXXX-XXXX certo.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DICA -->
+  <div class="hint-box reveal">
+    <p>
+      Abre o disassembly de <code style="color:var(--cyan)">generate_key</code>.<br>
+      Procura o loop: tem um <code style="color:var(--cyan)">imul</code> dentro dele. O que é multiplicado pelo quê?<br>
+      Depois do loop, procura um <code style="color:var(--cyan)">imul</code> com uma constante grande — isso é o módulo otimizado.<br>
+      Reproduz essa operação em Python. Gera a chave. Testa.
+    </p>
+  </div>
+
+  <!-- SOLUÇÃO -->
+  <div class="reveal" style="margin-top:3rem">
+    <div class="sec-label">// solução passo a passo</div>
+  </div>
+
+  <!-- PASSO 1 -->
+  <div class="step-block reveal">
+    <div class="step-num">01</div>
+    <div class="step-title">Localizar e ler generate_key</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-cmd">objdump -d ./challenge | grep -A 40 "&lt;generate_key&gt;:"</span></pre></div>
+    </div>
+    <div class="step-desc">O disassembly vai mostrar este padrão dentro do loop:</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">asm</span></div>
+      <div class="code-body"><pre><span class="hl-addr">4012db</span>:  <span class="hl-byte">8b 45 f8</span>       <span class="hl-reg">mov</span>   -0x8(%rbp),%eax      <span class="hl-comment">; i</span>
+<span class="hl-addr">4012de</span>:  <span class="hl-byte">48 63 d0</span>       <span class="hl-reg">movslq</span> %eax,%rdx
+<span class="hl-addr">4012e1</span>:  <span class="hl-byte">48 8b 45 e8</span>    <span class="hl-reg">mov</span>   -0x18(%rbp),%rax     <span class="hl-comment">; name</span>
+<span class="hl-addr">4012e5</span>:  <span class="hl-byte">48 01 d0</span>       <span class="hl-reg">add</span>   %rdx,%rax
+<span class="hl-addr">4012e8</span>:  <span class="hl-byte">0f b6 00</span>       <span class="hl-reg">movzbl</span> (%rax),%eax          <span class="hl-comment">; byte = name[i]</span>
+<span class="hl-addr">4012eb</span>:  <span class="hl-byte">0f b6 c0</span>       <span class="hl-reg">movzbl</span> %al,%eax
+<span class="hl-addr">4012ee</span>:  <span class="hl-byte">8b 55 f8</span>       <span class="hl-reg">mov</span>   -0x8(%rbp),%edx       <span class="hl-comment">; i</span>
+<span class="hl-addr">4012f1</span>:  <span class="hl-byte">83 c2 01</span>       <span class="hl-reg">add</span>   $0x1,%edx              <span class="hl-comment">; i + 1</span>
+<span class="hl-addr">4012f4</span>:  <span class="hl-byte">0f af c2</span>       <span class="hl-reg">imul</span>  %edx,%eax             <span class="hl-comment">; byte * (i+1)</span>
+<span class="hl-addr">4012f7</span>:  <span class="hl-byte">01 45 fc</span>       <span class="hl-reg">add</span>   %eax,-0x4(%rbp)        <span class="hl-comment">; acc += ...</span></pre></div>
+    </div>
+    <div class="why-block">
+      <p>
+        O loop soma <strong>byte × (posição + 1)</strong> para cada caractere do nome.<br>
+        Isso é a função hash — acc = Σ name[i] × (i+1).<br>
+        Depois do loop vem o módulo por 9973 (otimizado com recíproco) e uma segunda operação com 1337.
+      </p>
+    </div>
+  </div>
+
+  <!-- PASSO 2 -->
+  <div class="step-block reveal">
+    <div class="step-num">02</div>
+    <div class="step-title">Entender o módulo otimizado</div>
+    <div class="step-desc">O compilador não usa <code>div</code> — usa multiplicação por um magic number. No disassembly após o loop:</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">asm</span></div>
+      <div class="code-body"><pre><span class="hl-addr">40130b</span>:  <span class="hl-byte">b8 55 70 48 d2</span>    <span class="hl-reg">mov</span>  $0xd2487055,%eax
+<span class="hl-addr">401310</span>:  <span class="hl-byte">48 0f af c2</span>       <span class="hl-reg">imul</span> %rdx,%rax              <span class="hl-comment">; acc * magic</span>
+<span class="hl-addr">401314</span>:  <span class="hl-byte">48 c1 e8 20</span>       <span class="hl-reg">shr</span>  $0x20,%rax             <span class="hl-comment">; >> 32</span>
+<span class="hl-addr">401318</span>:  <span class="hl-byte">c1 e8 0d</span>          <span class="hl-reg">shr</span>  $0xd,%eax              <span class="hl-comment">; >> 13 = quociente</span>
+<span class="hl-addr">40131b</span>:  <span class="hl-byte">69 d0 f5 26 00 00</span> <span class="hl-reg">imul</span> $0x26f5,%eax,%edx     <span class="hl-comment">; q * 9973</span>
+<span class="hl-addr">401321</span>:  <span class="hl-byte">29 d1</span>             <span class="hl-reg">sub</span>  %edx,%ecx              <span class="hl-comment">; acc - q*9973 = acc % 9973</span></pre></div>
+    </div>
+    <div class="step-desc">Você <strong>não precisa entender isso</strong> — só sabe que é <code>% 9973</code>. O código-fonte deixa claro. Agora o main aplica mais uma transformação:</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">asm — dentro de main</span></div>
+      <div class="code-body"><pre><span class="hl-addr">401476</span>:  <span class="hl-byte">e8 31 fe ff ff</span>   <span class="hl-reg">call</span>  4012ac &lt;generate_key&gt;
+<span class="hl-addr">40147b</span>:  <span class="hl-byte">89 45 fc</span>         <span class="hl-reg">mov</span>   %eax,-0x4(%rbp)      <span class="hl-comment">; expected = generate_key(name)</span>
+<span class="hl-addr">401481</span>:  <span class="hl-byte">69 d0 39 05 00 00</span> <span class="hl-reg">imul</span> $0x539,%eax,%edx    <span class="hl-comment">; expected * 1337</span>
+<span class="hl-addr">401489</span>:  <span class="hl-byte">48 69 c0 f7...</span>   <span class="hl-reg">imul</span> ...                   <span class="hl-comment">; % 99991 (magic)</span>
+<span class="hl-addr">4014a8</span>:  <span class="hl-byte">8b 45 8c</span>         <span class="hl-reg">mov</span>   -0x74(%rbp),%eax     <span class="hl-comment">; provided (da entrada)</span>
+<span class="hl-addr">4014ab</span>:  <span class="hl-byte">39 45 f8</span>         <span class="hl-reg">cmp</span>   %eax,-0x8(%rbp)     <span class="hl-comment">; key_val == provided?</span>
+<span class="hl-addr">4014ae</span>:  <span class="hl-byte">75 4d</span>            <span class="hl-reg">jne</span>   4014fd              <span class="hl-comment">; não bate → erro</span></pre></div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.8;margin-top:1rem">
+      A fórmula completa: <code style="color:var(--cyan)">key_val = (generate_key(name) * 1337) % 99991</code>
+    </p>
+  </div>
+
+  <!-- PASSO 3 -->
+  <div class="step-block reveal">
+    <div class="step-num">03</div>
+    <div class="step-title">Escrever o keygen</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">python3 — keygen.py</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-comment">#!/usr/bin/env python3</span>
+<span class="hl-comment"># keygen.py — CRACKLAB #06</span>
+
+<span class="hl-kw">import</span> sys
+
+<span class="hl-kw">def</span> <span class="hl-cmd">generate_key</span>(name: str) -> int:
+    acc = 0
+    <span class="hl-kw">for</span> i, c <span class="hl-kw">in</span> enumerate(name):
+        acc += ord(c) * (i + 1)
+    <span class="hl-kw">return</span> acc % 9973
+
+<span class="hl-kw">def</span> <span class="hl-cmd">keygen</span>(name: str) -> str:
+    expected = generate_key(name)
+    key_val  = (expected * 1337) % 99991
+    s = f<span class="hl-str">"{key_val:08d}"</span>
+    <span class="hl-kw">return</span> f<span class="hl-str">"{s[:4]}-{s[4:]}"</span>
+
+name = sys.argv[1] <span class="hl-kw">if</span> len(sys.argv) > 1 <span class="hl-kw">else</span> input(<span class="hl-str">"Nome: "</span>)
+print(f<span class="hl-str">"Chave para '{name}': {keygen(name)}"</span>)</pre></div>
+    </div>
+    <div class="story-terminal" style="margin-top:1rem">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <span class="terminal-path">~/cracklab/06-keygen-simples</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-dim">$</span> <span class="t-green">python3 keygen.py willian</span></div>
+        <div style="color:var(--cyan)">Chave para 'willian': 0006-0545</div>
+        <div style="margin-top:8px"><span class="t-dim">$</span> <span class="t-green">python3 keygen.py root</span></div>
+        <div style="color:var(--cyan)">Chave para 'root': 0051-7427</div>
+        <div style="margin-top:8px"><span class="t-dim">$</span> <span class="t-green">python3 keygen.py qualquercoisa</span></div>
+        <div style="color:var(--cyan)">Chave para 'qualquercoisa': 0022-1133</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASSO 4 -->
+  <div class="step-block reveal">
+    <div class="step-num">04</div>
+    <div class="step-title">Verificar</div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">copiar</button></div>
+      <div class="code-body"><pre><span class="hl-comment"># testa com um nome qualquer</span>
+<span class="hl-cmd">KEY=$(python3 keygen.py alice)
+printf "alice\n$KEY\n" | ./challenge</span></pre></div>
+    </div>
+    <div class="why-block">
+      <p>
+        <strong>Por que isso é mais importante que patching?</strong> Você acabou de fazer engenharia reversa de verdade.<br>
+        Não corrigiu um byte — <strong>reconstruiu o algoritmo original em outra linguagem</strong>.<br>
+        A partir daqui, patches ficam mais difíceis (anti-debug, checksums). Mas keygen nunca falha.
+      </p>
+    </div>
+  </div>
+
+  <!-- VARIAÇÕES -->
+  <div class="reveal" style="margin-top:3rem">
+    <div class="sec-label">// variações pra explorar</div>
+    <table class="alt-table">
+      <thead>
+        <tr><th>variação</th><th>o que faz</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>patch clássico</td><td>Trocar <code style="color:var(--blue)">jne 0x4014ae</code> → NOP. Funciona, mas não entende o algoritmo.</td></tr>
+        <tr><td>patch retorno</td><td>Forçar <code style="color:var(--blue)">cmp</code> a sempre ser igual. Igualmente burro e mais difícil de localizar.</td></tr>
+        <tr><td>keygen (correto)</td><td>Reproduz a lógica. Funciona pra qualquer nome, qualquer instância, sem tocar no binário.</td></tr>
+      </tbody>
+    </table>
+    <div class="question-box">
+      <p>O módulo é 9973 (primo). Por que usar um número primo como módulo numa função hash ajuda a distribuir melhor os valores? E o que aconteceria se o módulo fosse uma potência de 2?</p>
+    </div>
+  </div>
+
+  <div class="nav-challenges reveal">
+    <a href="../05-redirect-funcao/index.html" class="nav-ch-item back">
+      <div class="nav-ch-dir">&#8592; anterior</div>
+      <div class="nav-ch-num">// 05</div>
+      <div class="nav-ch-title">Redirect de Função</div>
+    </a>
+    <a href="../07-keygen-checksum/index.html" class="nav-ch-item next" style="text-align:right">
+      <div class="nav-ch-dir">próximo &#8594;</div>
+      <div class="nav-ch-num">// 07</div>
+      <div class="nav-ch-title">Keygen com Checksum</div>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div>
+    <span><span style="color:var(--green)">/</span>cracklab &mdash; 2026</span>
+    <span style="margin-left:15px; display:inline-flex; align-items:center; gap:6px;">
+      Criado por Willian Albarello
+      <a href="https://github.com/walbarellos" target="_blank" style="color:inherit; display:inline-flex; align-items:center;" aria-label="GitHub">
+        <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+    </span>
+  </div>
+  <div>
+    <span>feito com r2, gcc e muita curiosidade</span>
+    <span style="color:var(--dim); margin-left: 15px;">linux only &middot; elf64</span>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+function copyCode(btn){
+  const code = btn.closest('.code-block').querySelector('pre').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'copiado!';
+    setTimeout(() => btn.textContent = 'copiar', 1500);
+  });
+}
+</script>
+</body>
+</html>

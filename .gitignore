@@ -1,0 +1,11 @@
+# Compilados
+*.o
+*.out
+*.exe
+
+# Binários de desafio compilados
+# challenge
+
+# Arquivos temporários do OS
+.DS_Store
+Thumbs.db
