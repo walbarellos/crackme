@@ -1,11 +1,46 @@
-# Compilados
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# === C / Build Artifacts ===
 *.o
+*.obj
+*.so
+*.a
+*.lib
 *.out
 *.exe
+# Ignore the challenge binary specifically used in this project
+challenge
 
-# Binários de desafio compilados
-# challenge
+# === Editor / IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
 
-# Arquivos temporários do OS
+# === OS Files ===
 .DS_Store
-Thumbs.dbdocs/
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# === Miscellaneous ===
+*.log
+.gemini/
+ctf-trash-playground/
